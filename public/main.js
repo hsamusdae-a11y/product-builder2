@@ -1,195 +1,272 @@
-// --- 전역 변수 및 초기화 ---
-const navLinks = document.querySelectorAll('.nav-link');
-const timeButtons = document.querySelectorAll('.time-btn');
-let selectedTime = 10; // 기본값 10분
 
-// --- 네비게이션 로직 ---
-function showSection(sectionId, element) {
-    event.preventDefault();
-    const sections = document.querySelectorAll('section');
-    sections.forEach(sec => sec.classList.remove('active'));
+// --- Navigation --- //
+function showSection(sectionId, navElement) {
+    document.querySelectorAll('.container section').forEach(section => {
+        section.classList.remove('active');
+    });
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active-nav');
+    });
     document.getElementById(sectionId).classList.add('active');
-
-    navLinks.forEach(link => link.classList.remove('active-nav'));
-    if (element && !element.hasAttribute('target')) {
-        element.classList.add('active-nav');
+    if (navElement) {
+        navElement.classList.add('active-nav');
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const introLink = document.querySelector('a[onclick*="intro"]');
-    if (introLink) {
-        showSection('intro', introLink);
-    }
-});
-
-// --- 시간 선택 로직 ---
-timeButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        timeButtons.forEach(btn => btn.classList.remove('active-time'));
-        button.classList.add('active-time');
-        selectedTime = button.dataset.time;
+    showSection('intro', document.querySelector('a[onclick*="intro"]'));
+    // Populate meditation verse from sermon notes if available
+    document.querySelector('a[onclick*="meditation-helper"]').addEventListener('click', () => {
+        const sermonVerse = document.getElementById('sermonVerseText').value;
+        if(sermonVerse) {
+            document.getElementById('meditationVerse').value = sermonVerse;
+        }
     });
 });
 
-// --- 성경 구절 검색 로직 (Fetch API + CORS Proxy) ---
-const verseSearchInput = document.getElementById('verseSearchInput');
-const verseSearchBtn = document.getElementById('verseSearchBtn');
-const verseSearchResult = document.getElementById('verseSearchResult');
-const verseResultText = document.getElementById('verseResultText');
-const addVerseBtn = document.getElementById('addVerseBtn');
-const sermonVerseText = document.getElementById('sermonVerseText');
 
-const bibleBookMap = {
-    // Full Names
-    "창세기": "Genesis", "출애굽기": "Exodus", "레위기": "Leviticus", "민수기": "Numbers", "신명기": "Deuteronomy",
-    "여호수아": "Joshua", "사사기": "Judges", "룻기": "Ruth", "사무엘상": "1 Samuel", "사무엘하": "2 Samuel",
-    "열왕기상": "1 Kings", "열왕기하": "2 Kings", "역대상": "1 Chronicles", "역대하": "2 Chronicles", "에스라": "Ezra",
-    "느헤미야": "Nehemiah", "에스더": "Esther", "욥기": "Job", "시편": "Psalms", "잠언": "Proverbs",
-    "전도서": "Ecclesiastes", "아가": "Song of Solomon", "이사야": "Isaiah", "예레미야": "Jeremiah",
-    "예레미야애가": "Lamentations", "에스겔": "Ezekiel", "다니엘": "Daniel", "호세아": "Hosea", "요엘": "Joel",
-    "아모스": "Amos", "오바댜": "Obadiah", "요나": "Jonah", "미가": "Micah", "나훔": "Nahum", "하박국": "Habakkuk",
-    "스바냐": "Zephaniah", "학개": "Haggai", "스가랴": "Zechariah", "말라기": "Malachi",
-    "마태복음": "Matthew", "마가복음": "Mark", "누가복음": "Luke", "요한복음": "John", "사도행전": "Acts",
-    "로마서": "Romans", "고린도전서": "1 Corinthians", "고린도후서": "2 Corinthians", "갈라디아서": "Galatians",
-    "에베소서": "Ephesians", "빌립보서": "Philippians", "골로새서": "Colossians", "데살로니가전서": "1 Thessalonians",
-    "데살로니가후서": "2 Thessalonians", "디모데전서": "1 Timothy", "디모데후서": "2 Timothy", "디도서": "Titus",
-    "빌레몬서": "Philemon", "히브리서": "Hebrews", "야고보서": "James", "베드로전서": "1 Peter",
-    "베드로후서": "2 Peter", "요한1서": "1 John", "요한2서": "2 John", "요한3서": "3 John", "유다서": "Jude", "요한계시록": "Revelation",
-    // Abbreviations
-    "창": "Genesis", "출": "Exodus", "레": "Leviticus", "민": "Numbers", "신": "Deuteronomy",
-    "수": "Joshua", "삿": "Judges", "룻": "Ruth", "삼상": "1 Samuel", "삼하": "2 Samuel", "왕상": "1 Kings", "왕하": "2 Kings",
-    "대상": "1 Chronicles", "대하": "2 Chronicles", "스": "Ezra", "느": "Nehemiah", "에": "Esther",
-    "욥": "Job", "시": "Psalms", "잠": "Proverbs", "전": "Ecclesiastes", "아": "Song of Solomon",
-    "사": "Isaiah", "렘": "Jeremiah", "애": "Lamentations", "겔": "Ezekiel", "단": "Daniel",
-    "호": "Hosea", "욜": "Joel", "암": "Amos", "옵": "Obadiah", "욘": "Jonah", "미": "Micah",
-    "나": "Nahum", "합": "Habakkuk", "습": "Zephaniah", "학": "Haggai", "슥": "Zechariah", "말": "Malachi",
-    "마": "Matthew", "막": "Mark", "눅": "Luke", "요": "John", "행": "Acts",
-    "롬": "Romans", "고전": "1 Corinthians", "고후": "2 Corinthians", "갈": "Galatians",
-    "엡": "Ephesians", "빌": "Philippians", "골": "Colossians", "살전": "1 Thessalonians", "살후": "2 Thessalonians",
-    "딤전": "1 Timothy", "딤후": "2 Timothy", "딛": "Titus", "몬": "Philemon",
-    "히": "Hebrews", "약": "James", "벧전": "1 Peter", "벧후": "2 Peter",
-    "요일": "1 John", "요이": "2 John", "요삼": "3 John", "유": "Jude", "계": "Revelation"
+// --- Bible Data & Search --- //
+
+window.BIBLE_DATA = window.BIBLE_DATA || {};
+const BOOK_TO_FILENAME = {
+    "창세기": "genesis", "출애굽기": "exodus", "레위기": "leviticus", "민수기": "numbers", "신명기": "deuteronomy",
+    "여호수아": "joshua", "사사기": "judges", "룻기": "ruth", "사무엘상": "samuel1", "사무엘하": "samuel2",
+    "열왕기상": "kings1", "열왕기하": "kings2", "역대상": "chronicles1", "역대하": "chronicles2", "에스라": "ezra",
+    "느헤미야": "nehemiah", "에스더": "esther", "욥기": "job", "시편": "psalms", "잠언": "proverbs",
+    "전도서": "ecclesiastes", "아가": "songofsongs", "이사야": "isaiah", "예레미야": "jeremiah", 
+    "예레미야애가": "lamentations", "에스겔": "ezekiel", "다니엘": "daniel", "호세아": "hosea", "요엘": "joel",
+    "아모스": "amos", "오바댜": "obadiah", "요나": "jonah", "미가": "micah", "나훔": "nahum", "하박국": "habakkuk",
+    "스바냐": "zephaniah", "학개": "haggai", "스가랴": "zechariah", "말라기": "malachi", "마태복음": "matthew",
+    "마가복음": "mark", "누가복음": "luke", "요한복음": "john", "사도행전": "acts", "로마서": "romans",
+    "고린도전서": "corinthians1", "고린도후서": "corinthians2", "갈라디아서": "galatians", "에베소서": "ephesians",
+    "빌립보서": "philippians", "골로새서": "colossians", "데살로니가전서": "thessalonians1", 
+    "데살로니가후서": "thessalonians2", "디모데전서": "timothy1", "디모데후서": "timothy2", "디도서": "titus",
+    "빌레몬서": "philemon", "히브리서": "hebrews", "야고보서": "james", "베드로전서": "peter1", "베드로후서": "peter2",
+    "요한1서": "john1", "요한2서": "john2", "요한3서": "john3", "유다서": "jude", "요한계시록": "revelation"
 };
+const ALL_BOOKS = Object.keys(BOOK_TO_FILENAME);
 
-async function searchVerse() {
-    let originalQuery = verseSearchInput.value.trim();
-    if (!originalQuery) {
-        verseResultText.textContent = "검색할 구절을 입력하세요.";
-        verseSearchResult.style.display = 'block';
-        addVerseBtn.style.display = 'none';
-        return;
-    }
+function loadBookScript(bookFileName) {
+    return new Promise((resolve, reject) => {
+        if (window.BIBLE_DATA[bookFileName]) return resolve();
+        const script = document.createElement('script');
+        script.src = `bible/${bookFileName}.js`;
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error(`Failed to load ${bookFileName}.js`));
+        document.head.appendChild(script);
+    });
+}
 
-    let queryForApi = originalQuery;
-    const sortedKoreanBooks = Object.keys(bibleBookMap).sort((a, b) => b.length - a.length);
-
-    for (const koreanBook of sortedKoreanBooks) {
-        if (originalQuery.startsWith(koreanBook)) {
-            queryForApi = `${bibleBookMap[koreanBook]} ${originalQuery.substring(koreanBook.length).trim()}`;
-            break;
-        }
-    }
-
-    verseResultText.textContent = "검색 중...";
-    verseSearchResult.style.display = 'block';
+async function searchVerse(query) {
+    const resultBox = document.getElementById('verseSearchResult');
+    const resultText = document.getElementById('verseResultText');
+    const addVerseBtn = document.getElementById('addVerseBtn');
+    resultBox.style.display = 'block';
     addVerseBtn.style.display = 'none';
 
-    const apiUrl = `https://bible-api.com/${encodeURIComponent(queryForApi)}?translation=ko-gae`;
-    // Using a CORS proxy to bypass browser security restrictions
-    const proxyUrl = `https://cors-anywhere.herokuapp.com/${apiUrl}`;
+    const match = query.match(/^([\S^\d]+)\s*(\d+):(\d+)$/);
+    if (!match) {
+        resultText.textContent = '형식 오류: \'창1:1\'과 같이 입력해주세요.';
+        return;
+    }
+
+    let [, bookAbbr, chapter, verse] = match;
+    const fullBookName = window.BIBLE_ABBREVIATIONS[bookAbbr];
+    if (!fullBookName) {
+        resultText.textContent = `\'${bookAbbr}\'는 유효한 약어가 아닙니다.`;
+        return;
+    }
+
+    const bookFileName = BOOK_TO_FILENAME[fullBookName];
+    if (!bookFileName) {
+        resultText.textContent = `\'${fullBookName}\'에 대한 데이터 파일이 아직 준비되지 않았습니다.`;
+        return;
+    }
 
     try {
-        const response = await fetch(proxyUrl, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        });
-        const data = await response.json();
-
-        if (response.ok) {
-            if (data && data.text) {
-                verseResultText.innerHTML = `<b>${data.reference} (개역개정)</b><br>${data.text.trim()}`;
-                addVerseBtn.style.display = 'block';
-            } else {
-                throw new Error(data.error || 'API에서 유효한 구절 텍스트를 받지 못했습니다.');
-            }
+        await loadBookScript(bookFileName);
+        const verseText = window.BIBLE_DATA[bookFileName]?.[chapter]?.[verse];
+        if (verseText) {
+            const fullReference = `${fullBookName} ${chapter}:${verse}`;
+            const verseContent = `${fullReference}: ${verseText}`;
+            resultText.textContent = verseContent;
+            resultText.dataset.fullVerse = verseContent;
+            addVerseBtn.style.display = 'inline-block';
         } else {
-            throw new Error(data.error || `서버 오류: ${response.status}`);
+            resultText.textContent = '구절을 찾을 수 없습니다.';
         }
     } catch (error) {
-        console.error("성경 구절 검색 오류:", error);
-        verseResultText.textContent = `오류: ${error.message}. 구절 형식을 확인하거나 잠시 후 다시 시도해주세요.`;
-        addVerseBtn.style.display = 'none';
+        resultText.textContent = `데이터 로딩 중 오류 발생.`;
     }
 }
 
-verseSearchBtn.addEventListener('click', searchVerse);
-verseSearchInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') searchVerse();
-});
+// --- Daily Verse --- //
+async function getDailyVerse() {
+    const resultDiv = document.getElementById('dailyVerseResult');
+    const verseTextP = document.getElementById('dailyVerseText');
+    resultDiv.style.display = 'block';
+    verseTextP.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 말씀을 가져오는 중...';
 
-addVerseBtn.addEventListener('click', () => {
-    const currentText = sermonVerseText.value.trim();
-    const newVerseText = verseResultText.innerText.replace(' (개역개정)\n', '\n');
-    const newVerse = `[${newVerseText.split('\n')[0]}]\n${newVerseText.substring(newVerseText.indexOf('\n') + 1)}`;
+    try {
+        const randomBook = ALL_BOOKS[Math.floor(Math.random() * ALL_BOOKS.length)];
+        const bookFileName = BOOK_TO_FILENAME[randomBook];
+        await loadBookScript(bookFileName);
+        
+        const bookData = window.BIBLE_DATA[bookFileName];
+        const chapters = Object.keys(bookData);
+        const randomChapter = chapters[Math.floor(Math.random() * chapters.length)];
+        const verses = Object.keys(bookData[randomChapter]);
+        const randomVerse = verses[Math.floor(Math.random() * verses.length)];
+        const verseText = bookData[randomChapter][randomVerse];
+        
+        verseTextP.innerHTML = `<strong>${randomBook} ${randomChapter}:${randomVerse}</strong><br>${verseText}`;
 
-    sermonVerseText.value = currentText ? `${currentText}\n\n${newVerse}` : newVerse;
-    sermonVerseText.scrollTop = sermonVerseText.scrollHeight;
-});
+    } catch (error) {
+        verseTextP.textContent = '말씀을 가져오는 데 실패했습니다.';
+        console.error('Error getting daily verse:', error);
+    }
+}
+
+// --- Meditation Helper --- //
+function generateMeditationQuestions() {
+    const verse = document.getElementById('meditationVerse').value;
+    const questionsDiv = document.getElementById('meditationQuestions');
+
+    if (!verse) {
+        questionsDiv.innerHTML = '<p style="color: red;">먼저 묵상할 구절을 입력해주세요.</p>';
+        return;
+    }
+
+    questionsDiv.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> AI가 묵상 질문을 생성하는 중입니다...</p>';
+
+    // This is a placeholder for a real AI API call.
+    setTimeout(() => {
+        const questions = [
+            `이 구절의 핵심 단어나 메시지는 무엇이라고 생각하나요?`,
+            `이 말씀은 하나님에 대해, 또는 예수님에 대해 무엇을 알려주나요?`,
+            `나 자신의 삶, 생각, 태도에 대해 무엇을 돌아보게 하나요?`,
+            `이 말씀을 통해 오늘 하루 실천하거나 적용할 수 있는 것은 무엇일까요?`,
+            `이 구절을 읽고 마음에 드는 기도 제목이 있다면 무엇인가요?`
+        ];
+        questionsDiv.innerHTML = '<h3>묵상 질문</h3><ul>' + questions.map(q => `<li>${q}</li>`).join('') + '</ul>';
+    }, 1500); 
+}
 
 
-// --- AI 설교 개요 생성 로직 ---
-function generateSermon() {
-    const topic = document.getElementById('sermonTopic').value;
-    const verses = document.getElementById('sermonVerseText').value;
+// --- Concordance Search --- //
+let allBooksLoaded = false;
 
-    if (!topic.trim() || !verses.trim()) {
-        alert("설교 주제와 성경 구절을 모두 입력해 주세요.");
+async function loadAllBibleData() {
+    if (allBooksLoaded) return Promise.resolve();
+    const resultsDiv = document.getElementById('concordanceResults');
+    resultsDiv.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> 모든 성경 데이터를 불러오는 중입니다. 잠시만 기다려주세요...</p>';
+
+    const bookPromises = Object.values(BOOK_TO_FILENAME).map(loadBookScript);
+    try {
+        await Promise.all(bookPromises);
+        allBooksLoaded = true;
+         resultsDiv.innerHTML = '<p>데이터 로딩 완료! 검색어를 입력하세요.</p>';
+    } catch (error) {
+        resultsDiv.innerHTML = '<p style="color: red;">데이터 로딩에 실패했습니다. 페이지를 새로고침하고 다시 시도해주세요.</p>';
+        console.error("Error loading all bible data:", error);
+    }
+}
+
+async function searchConcordance(keyword) {
+    const resultsDiv = document.getElementById('concordanceResults');
+    if (!keyword) {
+        resultsDiv.innerHTML = '<p>검색할 단어를 입력해주세요.</p>';
         return;
     }
     
-    const firstVerse = verses.split('\n')[0];
-    const title = `'${topic}'에 대한 설교 (${firstVerse})`;
-    let intro, body, conclusion;
+    await loadAllBibleData();
+    if (!allBooksLoaded) return; // Stop if loading failed
 
-    if (selectedTime == 5) {
-        intro = `오늘 본문 말씀(${firstVerse})을 중심으로 '${topic}'이라는 주제에 대해 잠시 은혜를 나누고자 합니다. 이 짧은 시간을 통해 말씀이 주는 핵심 교훈을 살펴보겠습니다.`;
-        body = `본문은 우리에게 '${topic}'의 중요성을 강력하게 시사합니다. 기록된 구절들을 통해 우리는 하나님의 뜻을 더 깊이 이해할 수 있습니다. 핵심은...`;
-        conclusion = `결론적으로, 오늘 말씀을 통해 우리는 '${topic}'의 의미를 되새겼습니다. 이 가르침을 마음판에 새기고 한 주간 승리하는 삶을 사시기를 축복합니다.`;
-    } else if (selectedTime == 30) {
-        intro = `오늘 우리가 함께 나눌 말씀은 ${firstVerse}이며, 이를 통해 '${topic}'이라는 주제를 심도있게 다루고자 합니다. 이 시간, 성령의 조명하심으로 말씀의 깊은 곳으로 함께 들어가기를 소망합니다. 서론에서는 이 주제가 오늘날 우리에게 왜 중요한지 그 배경을 짚어보겠습니다.`;
-        body = `본론에서는 세 가지 대지로 나누어 말씀을 증거하겠습니다. 첫째, 본문 말씀들에서 '${topic}'이 어떻게 나타나는지 구체적인 구절을 통해 살펴보겠습니다. 둘째, 이 가르침을 우리 삶에 어떻게 적용할 수 있을지 실제적인 예시와 함께 나누겠습니다. 셋째, 이를 통해 우리가 얻게 되는 영적인 유익과 하나님의 약속은 무엇인지 확인하겠습니다.`;
-        conclusion = `말씀을 맺겠습니다. 오늘 우리는 '${topic}'이라는 주제 아래 하나님의 귀한 말씀을 상고했습니다. 서론, 본론, 결론을 통해 살펴본 바와 같이, 이 말씀은 단순한 지식이 아니라 우리의 삶을 변화시키는 능력이 있습니다. 이 말씀을 붙잡고 세상으로 나아가 빛과 소금의 역할을 감당하는 저와 여러분 되시기를 주님의 이름으로 축원합니다.`;
-    } else { // 10분 (기본)
-        intro = `오늘 '${topic}'이라는 주제로, ${firstVerse} 말씀을 중심으로 하나님의 은혜를 나누겠습니다. 이 주제는 우리의 신앙 여정에서 매우 중요한 의미를 지닙니다.`;
-        body = `본문은 '${topic}'에 대해 명확하게 교훈합니다. 성경 구절들을 연결하여 살펴보면, 우리는 하나님의 일관된 메시지를 발견할 수 있습니다. 이 메시지는 바로...`;
-        conclusion = `이제 말씀을 정리합니다. '${topic}'은 우리에게 주시는 하나님의 귀한 선물입니다. 이 진리를 기억하며, 삶의 모든 영역에서 하나님께 영광 돌리는 복된 성도님들이 되시기를 바랍니다.`;
+    resultsDiv.innerHTML = `<p><i class="fas fa-search"></i> \"${keyword}\" 검색 중...</p>`;
+    let findings = [];
+    
+    for (const [fullBookName, bookFileName] of Object.entries(BOOK_TO_FILENAME)) {
+        const bookData = window.BIBLE_DATA[bookFileName];
+        for (const chapter in bookData) {
+            for (const verse in bookData[chapter]) {
+                const verseText = bookData[chapter][verse];
+                if (verseText.includes(keyword)) {
+                    const reference = `${fullBookName} ${chapter}:${verse}`;
+                    findings.push({ reference, text: verseText });
+                }
+            }
+        }
     }
 
-    const resultArea = document.getElementById('resultArea');
-    resultArea.style.display = 'block';
-    document.getElementById('generatedTitle').innerText = title;
-    document.getElementById('p1').innerText = intro;
-    document.getElementById('p2').innerText = body;
-    document.getElementById('p3').innerText = conclusion;
-    
-    resultArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (findings.length > 0) {
+        resultsDiv.innerHTML = findings.map((finding, index) => `
+            <div class="result-item">
+                <p><strong>${finding.reference}</strong>: ${finding.text.replace(new RegExp(keyword, 'g'), `<span class="highlight">${keyword}</span>`)}</p>
+                <button class="add-to-sermon-btn" data-verse="${finding.reference}: ${finding.text}"><i class="fas fa-plus"></i> 설교에 추가</button>
+            </div>
+        `).join('');
+    } else {
+        resultsDiv.innerHTML = `<p>\"${keyword}\" 단어를 포함한 구절을 찾을 수 없습니다.</p>`;
+    }
 }
 
-// --- 설교문 복사 로직 ---
-document.getElementById('copySermonBtn').addEventListener('click', () => {
-    const title = document.getElementById('generatedTitle').innerText;
-    const intro = document.getElementById('p1').innerText;
-    const body = document.getElementById('p2').innerText;
-    const conclusion = document.getElementById('p3').innerText;
-    
-    const fullSermon = `[설교 제목: ${title}]\n\n--- 서론 ---\n${intro}\n\n--- 본론 ---\n${body}\n\n--- 결론 ---\n${conclusion}`;
+function addVerseToSermon(verseContent) {
+    const verseTextarea = document.getElementById('sermonVerseText');
+    if (verseTextarea.value.length > 0) {
+        verseTextarea.value += '\n\n' + verseContent;
+    } else {
+        verseTextarea.value = verseContent;
+    }
+    showSection('sermon-notes', document.querySelector('a[onclick*="sermon-notes"]'));
+    alert('성공적으로 추가되었습니다.');
+}
 
-    navigator.clipboard.writeText(fullSermon).then(() => {
-        alert('설교 개요가 클립보드에 복사되었습니다.');
-    }).catch(err => {
-        alert('복사에 실패했습니다.');
-        console.error('Could not copy text: ', err);
-    });
+
+// --- Event Listeners --- //
+document.getElementById('verseSearchBtn').addEventListener('click', () => {
+    const query = document.getElementById('verseSearchInput').value;
+    if (query) searchVerse(query);
 });
+
+document.getElementById('verseSearchInput').addEventListener('keypress', e => {
+    if (e.key === 'Enter') searchVerse(e.target.value);
+});
+
+document.getElementById('addVerseBtn').addEventListener('click', () => {
+    const verseToAdd = document.getElementById('verseResultText').dataset.fullVerse;
+    addVerseToSermon(verseToAdd);
+    document.getElementById('verseSearchResult').style.display = 'none';
+});
+
+// Daily Verse
+document.getElementById('getDailyVerseBtn').addEventListener('click', getDailyVerse);
+
+// Meditation Helper
+document.getElementById('meditationVerse').addEventListener('focus', () => {
+    const sermonVerse = document.getElementById('sermonVerseText').value;
+    if (sermonVerse && document.getElementById('meditationVerse').value === '') {
+        document.getElementById('meditationVerse').value = sermonVerse;
+    }
+});
+
+document.getElementById('concordanceSearchBtn').addEventListener('click', () => {
+    const keyword = document.getElementById('concordanceSearchInput').value;
+    searchConcordance(keyword);
+});
+
+document.getElementById('concordanceSearchInput').addEventListener('keypress', e => {
+    if (e.key === 'Enter') searchConcordance(e.target.value);
+});
+
+// Use event delegation for dynamically added buttons
+document.getElementById('concordanceResults').addEventListener('click', e => {
+    if (e.target.classList.contains('add-to-sermon-btn') || e.target.closest('.add-to-sermon-btn')) {
+        const button = e.target.closest('.add-to-sermon-btn');
+        addVerseToSermon(button.dataset.verse);
+    }
+});
+
+
+function generateSermon() {
+    alert("AI 설교 개요 생성 기능은 현재 개발 중입니다.");
+}
