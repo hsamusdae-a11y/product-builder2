@@ -1,0 +1,259 @@
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-02-19T01:10:13.384Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-02-19T01:10:13.386Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-02-19T01:10:31.673Z] Running auto auth
+[debug] [2026-02-19T01:10:31.674Z] Running auto auth
+[debug] [2026-02-19T01:10:31.732Z] No OAuth tokens found
+[debug] [2026-02-19T01:10:31.741Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo [none]
+[debug] [2026-02-19T01:10:31.802Z] No OAuth tokens found
+[debug] [2026-02-19T01:10:31.803Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo [none]
+[debug] [2026-02-19T01:10:32.069Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo 200
+[debug] [2026-02-19T01:10:32.070Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo {"name":"projects/product-builder-code/billingInfo","projectId":"product-builder-code","billingAccountName":"","billingEnabled":false}
+[debug] [2026-02-19T01:10:32.086Z] No OAuth tokens found
+[debug] [2026-02-19T01:10:32.087Z] No OAuth tokens found
+[debug] [2026-02-19T01:10:32.107Z] No OAuth tokens found
+[debug] [2026-02-19T01:10:32.108Z] No OAuth tokens found
+[debug] [2026-02-19T01:10:32.108Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firestore.googleapis.com [none]
+[debug] [2026-02-19T01:10:32.108Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firestore.googleapis.com  x-goog-user-project=product-builder-code
+[debug] [2026-02-19T01:10:32.110Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebasedataconnect.googleapis.com [none]
+[debug] [2026-02-19T01:10:32.110Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebasedataconnect.googleapis.com  x-goog-user-project=product-builder-code
+[debug] [2026-02-19T01:10:32.112Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebaseapphosting.googleapis.com [none]
+[debug] [2026-02-19T01:10:32.113Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebaseapphosting.googleapis.com  x-goog-user-project=product-builder-code
+[debug] [2026-02-19T01:10:32.115Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebaseio.com [none]
+[debug] [2026-02-19T01:10:32.115Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebaseio.com  x-goog-user-project=product-builder-code
+[debug] [2026-02-19T01:10:32.833Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo 200
+[debug] [2026-02-19T01:10:32.833Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo {"name":"projects/product-builder-code/billingInfo","projectId":"product-builder-code","billingAccountName":"","billingEnabled":false}
+[debug] [2026-02-19T01:10:32.834Z] No OAuth tokens found
+[debug] [2026-02-19T01:10:32.836Z] No OAuth tokens found
+[debug] [2026-02-19T01:10:32.843Z] No OAuth tokens found
+[debug] [2026-02-19T01:10:32.843Z] No OAuth tokens found
+[debug] [2026-02-19T01:10:32.844Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firestore.googleapis.com [none]
+[debug] [2026-02-19T01:10:32.844Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firestore.googleapis.com  x-goog-user-project=product-builder-code
+[debug] [2026-02-19T01:10:32.846Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebasedataconnect.googleapis.com [none]
+[debug] [2026-02-19T01:10:32.846Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebasedataconnect.googleapis.com  x-goog-user-project=product-builder-code
+[debug] [2026-02-19T01:10:32.848Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebaseapphosting.googleapis.com [none]
+[debug] [2026-02-19T01:10:32.848Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebaseapphosting.googleapis.com  x-goog-user-project=product-builder-code
+[debug] [2026-02-19T01:10:32.850Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebaseio.com [none]
+[debug] [2026-02-19T01:10:32.850Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebaseio.com  x-goog-user-project=product-builder-code
+[debug] [2026-02-19T01:10:33.134Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebaseio.com 403
+[debug] [2026-02-19T01:10:33.135Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebaseio.com [omitted]
+[debug] [2026-02-19T01:10:33.190Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firestore.googleapis.com 200
+[debug] [2026-02-19T01:10:33.193Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firestore.googleapis.com [omitted]
+[debug] [2026-02-19T01:10:33.199Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebasedataconnect.googleapis.com 200
+[debug] [2026-02-19T01:10:33.199Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2026-02-19T01:10:33.238Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebaseapphosting.googleapis.com 200
+[debug] [2026-02-19T01:10:33.239Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2026-02-19T01:10:33.888Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firestore.googleapis.com 200
+[debug] [2026-02-19T01:10:33.888Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firestore.googleapis.com [omitted]
+[debug] [2026-02-19T01:10:33.894Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebaseio.com 403
+[debug] [2026-02-19T01:10:33.898Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebaseio.com [omitted]
+[debug] [2026-02-19T01:10:33.913Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebasedataconnect.googleapis.com 200
+[debug] [2026-02-19T01:10:33.913Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2026-02-19T01:10:33.920Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebaseapphosting.googleapis.com 200
+[debug] [2026-02-19T01:10:33.920Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/product-builder-code/services/firebaseapphosting.googleapis.com [omitted]
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-02-19T01:10:33.932Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-02-19T01:10:33.933Z] > authorizing via signed-in user (hsamusdae@gmail.com)
+[debug] [2026-02-19T01:10:33.933Z] No OAuth tokens found
+[debug] [2026-02-19T01:10:33.933Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo [none]
+[debug] [2026-02-19T01:10:34.130Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo 200
+[debug] [2026-02-19T01:10:34.134Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo {"name":"projects/product-builder-code/billingInfo","projectId":"product-builder-code","billingAccountName":"","billingEnabled":false}
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-02-19T01:10:34.137Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-02-19T01:10:34.139Z] > authorizing via signed-in user (hsamusdae@gmail.com)
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-02-19T01:10:34.172Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-02-19T01:10:34.172Z] > authorizing via signed-in user (hsamusdae@gmail.com)
+[debug] [2026-02-19T01:10:34.173Z] No OAuth tokens found
+[debug] [2026-02-19T01:10:34.173Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo [none]
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-02-19T01:10:34.198Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-02-19T01:10:34.198Z] > authorizing via signed-in user (hsamusdae@gmail.com)
+[debug] [2026-02-19T01:10:34.198Z] No OAuth tokens found
+[debug] [2026-02-19T01:10:34.199Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo [none]
+[debug] [2026-02-19T01:10:34.391Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo 200
+[debug] [2026-02-19T01:10:34.391Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo {"name":"projects/product-builder-code/billingInfo","projectId":"product-builder-code","billingAccountName":"","billingEnabled":false}
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-02-19T01:10:34.393Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-02-19T01:10:34.393Z] > authorizing via signed-in user (hsamusdae@gmail.com)
+[debug] [2026-02-19T01:10:35.202Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo 200
+[debug] [2026-02-19T01:10:35.203Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo {"name":"projects/product-builder-code/billingInfo","projectId":"product-builder-code","billingAccountName":"","billingEnabled":false}
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-02-19T01:10:35.207Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-02-19T01:10:35.208Z] > authorizing via signed-in user (hsamusdae@gmail.com)
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-02-19T01:18:25.546Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-02-19T01:18:25.546Z] > authorizing via signed-in user (hsamusdae@gmail.com)
+[debug] [2026-02-19T01:18:25.547Z] No OAuth tokens found
+[debug] [2026-02-19T01:18:25.547Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo [none]
+[debug] [2026-02-19T01:18:26.742Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo 200
+[debug] [2026-02-19T01:18:26.743Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo {"name":"projects/product-builder-code/billingInfo","projectId":"product-builder-code","billingAccountName":"","billingEnabled":false}
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-02-19T01:18:26.745Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-02-19T01:18:26.745Z] > authorizing via signed-in user (hsamusdae@gmail.com)
+[debug] [2026-02-19T01:18:26.746Z] No OAuth tokens found
+[debug] [2026-02-19T01:18:26.747Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo [none]
+[debug] [2026-02-19T01:18:26.965Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo 200
+[debug] [2026-02-19T01:18:26.965Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo {"name":"projects/product-builder-code/billingInfo","projectId":"product-builder-code","billingAccountName":"","billingEnabled":false}
+[debug] [2026-02-19T01:18:26.966Z] No OAuth tokens found
+[debug] [2026-02-19T01:18:26.973Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/ai-sermon-helper-4815/services/cloudresourcemanager.googleapis.com [none]
+[debug] [2026-02-19T01:18:26.973Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/ai-sermon-helper-4815/services/cloudresourcemanager.googleapis.com  x-goog-user-project=ai-sermon-helper-4815
+[debug] [2026-02-19T01:18:27.988Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/ai-sermon-helper-4815/services/cloudresourcemanager.googleapis.com 400
+[debug] [2026-02-19T01:18:27.988Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/ai-sermon-helper-4815/services/cloudresourcemanager.googleapis.com [omitted]
+[debug] [2026-02-19T01:18:27.988Z] Unable to check that https://cloudresourcemanager.googleapis.com is enabled on ai-sermon-helper-4815. Calls to it will fail if it is not enabled
+[debug] [2026-02-19T01:18:27.988Z] No OAuth tokens found
+[debug] [2026-02-19T01:18:27.989Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/ai-sermon-helper-4815 [none]
+[debug] [2026-02-19T01:18:28.889Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/ai-sermon-helper-4815 403
+[debug] [2026-02-19T01:18:28.890Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/ai-sermon-helper-4815 {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2026-02-19T01:18:28.893Z] No OAuth tokens found
+[debug] [2026-02-19T01:18:28.894Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects [none]
+[debug] [2026-02-19T01:18:28.894Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"projectId":"ai-sermon-helper-4815","name":"AI 설교 준비 도우미"}
+[debug] [2026-02-19T01:18:29.079Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects 400
+[debug] [2026-02-19T01:18:29.079Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"error":{"code":400,"message":"field [display_name] has issue [project display name contains invalid characters]","status":"INVALID_ARGUMENT","details":[{"@type":"type.googleapis.com/google.rpc.BadRequest","fieldViolations":[{"field":"display_name","description":"project display name contains invalid characters"}]},{"@type":"type.googleapis.com/google.rpc.Help","links":[{"url":"https://cloud.google.com/resource-manager/reference/rest/v1/projects"}]}]}}
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-02-19T01:19:01.298Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-02-19T01:19:01.298Z] > authorizing via signed-in user (hsamusdae@gmail.com)
+[debug] [2026-02-19T01:19:01.298Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:01.299Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo [none]
+[debug] [2026-02-19T01:19:01.546Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo 200
+[debug] [2026-02-19T01:19:01.549Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo {"name":"projects/product-builder-code/billingInfo","projectId":"product-builder-code","billingAccountName":"","billingEnabled":false}
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-02-19T01:19:01.560Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-02-19T01:19:01.560Z] > authorizing via signed-in user (hsamusdae@gmail.com)
+[debug] [2026-02-19T01:19:01.561Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:01.561Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo [none]
+[debug] [2026-02-19T01:19:02.725Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo 200
+[debug] [2026-02-19T01:19:02.727Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo {"name":"projects/product-builder-code/billingInfo","projectId":"product-builder-code","billingAccountName":"","billingEnabled":false}
+[debug] [2026-02-19T01:19:02.727Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:02.727Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/ai-sermon-helper-4815/services/cloudresourcemanager.googleapis.com [none]
+[debug] [2026-02-19T01:19:02.728Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/ai-sermon-helper-4815/services/cloudresourcemanager.googleapis.com  x-goog-user-project=ai-sermon-helper-4815
+[debug] [2026-02-19T01:19:03.665Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/ai-sermon-helper-4815/services/cloudresourcemanager.googleapis.com 400
+[debug] [2026-02-19T01:19:03.665Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/ai-sermon-helper-4815/services/cloudresourcemanager.googleapis.com [omitted]
+[debug] [2026-02-19T01:19:03.667Z] Unable to check that https://cloudresourcemanager.googleapis.com is enabled on ai-sermon-helper-4815. Calls to it will fail if it is not enabled
+[debug] [2026-02-19T01:19:03.667Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:03.667Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/ai-sermon-helper-4815 [none]
+[debug] [2026-02-19T01:19:04.593Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/ai-sermon-helper-4815 403
+[debug] [2026-02-19T01:19:04.593Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/ai-sermon-helper-4815 {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2026-02-19T01:19:04.594Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:04.594Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects [none]
+[debug] [2026-02-19T01:19:04.594Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"projectId":"ai-sermon-helper-4815","name":"AI Sermon Helper"}
+[debug] [2026-02-19T01:19:04.997Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects 200
+[debug] [2026-02-19T01:19:04.997Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"name":"operations/create_project.global.7090834772157385825"}
+[debug] [2026-02-19T01:19:05.000Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:05.001Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.7090834772157385825 [none]
+[debug] [2026-02-19T01:19:05.792Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.7090834772157385825 200
+[debug] [2026-02-19T01:19:05.792Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.7090834772157385825 {"name":"operations/create_project.global.7090834772157385825"}
+[debug] [2026-02-19T01:19:06.294Z] [Project Creation Poller] Retrying task index 0
+[debug] [2026-02-19T01:19:06.295Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:06.295Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.7090834772157385825 [none]
+[debug] [2026-02-19T01:19:06.484Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.7090834772157385825 200
+[debug] [2026-02-19T01:19:06.484Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.7090834772157385825 {"name":"operations/create_project.global.7090834772157385825"}
+[debug] [2026-02-19T01:19:07.485Z] [Project Creation Poller] Retrying task index 0
+[debug] [2026-02-19T01:19:07.486Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:07.486Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.7090834772157385825 [none]
+[debug] [2026-02-19T01:19:07.678Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.7090834772157385825 200
+[debug] [2026-02-19T01:19:07.678Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.7090834772157385825 {"name":"operations/create_project.global.7090834772157385825","metadata":{"@type":"type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus","gettable":true,"ready":true},"done":true,"response":{"@type":"type.googleapis.com/google.cloudresourcemanager.v1.Project","projectNumber":"62049036197","projectId":"ai-sermon-helper-4815","lifecycleState":"ACTIVE","name":"AI Sermon Helper","createTime":"2026-02-19T01:19:06.027618Z"}}
+[debug] [2026-02-19T01:19:07.679Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:07.679Z] >>> [apiv2][query] POST https://firebase.googleapis.com/v1beta1/projects/ai-sermon-helper-4815:addFirebase [none]
+[debug] [2026-02-19T01:19:11.227Z] <<< [apiv2][status] POST https://firebase.googleapis.com/v1beta1/projects/ai-sermon-helper-4815:addFirebase 200
+[debug] [2026-02-19T01:19:11.228Z] <<< [apiv2][body] POST https://firebase.googleapis.com/v1beta1/projects/ai-sermon-helper-4815:addFirebase {"name":"operations/workflows/MTIxOTEwMjAtNTczMC00ZTU5LTgxYTQtYjMwMTg5YTQzYzIw"}
+[debug] [2026-02-19T01:19:11.228Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:11.228Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/operations/workflows/MTIxOTEwMjAtNTczMC00ZTU5LTgxYTQtYjMwMTg5YTQzYzIw [none]
+[debug] [2026-02-19T01:19:15.708Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/operations/workflows/MTIxOTEwMjAtNTczMC00ZTU5LTgxYTQtYjMwMTg5YTQzYzIw 200
+[debug] [2026-02-19T01:19:15.710Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/operations/workflows/MTIxOTEwMjAtNTczMC00ZTU5LTgxYTQtYjMwMTg5YTQzYzIw {"name":"operations/workflows/MTIxOTEwMjAtNTczMC00ZTU5LTgxYTQtYjMwMTg5YTQzYzIw"}
+[debug] [2026-02-19T01:19:16.211Z] [Add Firebase Poller] Retrying task index 0
+[debug] [2026-02-19T01:19:16.212Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:16.212Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/operations/workflows/MTIxOTEwMjAtNTczMC00ZTU5LTgxYTQtYjMwMTg5YTQzYzIw [none]
+[debug] [2026-02-19T01:19:17.169Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/operations/workflows/MTIxOTEwMjAtNTczMC00ZTU5LTgxYTQtYjMwMTg5YTQzYzIw 200
+[debug] [2026-02-19T01:19:17.169Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/operations/workflows/MTIxOTEwMjAtNTczMC00ZTU5LTgxYTQtYjMwMTg5YTQzYzIw {"name":"operations/workflows/MTIxOTEwMjAtNTczMC00ZTU5LTgxYTQtYjMwMTg5YTQzYzIw"}
+[debug] [2026-02-19T01:19:18.170Z] [Add Firebase Poller] Retrying task index 0
+[debug] [2026-02-19T01:19:18.171Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:18.171Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/operations/workflows/MTIxOTEwMjAtNTczMC00ZTU5LTgxYTQtYjMwMTg5YTQzYzIw [none]
+[debug] [2026-02-19T01:19:19.174Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/operations/workflows/MTIxOTEwMjAtNTczMC00ZTU5LTgxYTQtYjMwMTg5YTQzYzIw 200
+[debug] [2026-02-19T01:19:19.174Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/operations/workflows/MTIxOTEwMjAtNTczMC00ZTU5LTgxYTQtYjMwMTg5YTQzYzIw {"name":"operations/workflows/MTIxOTEwMjAtNTczMC00ZTU5LTgxYTQtYjMwMTg5YTQzYzIw"}
+[debug] [2026-02-19T01:19:21.178Z] [Add Firebase Poller] Retrying task index 0
+[debug] [2026-02-19T01:19:21.179Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:21.179Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/operations/workflows/MTIxOTEwMjAtNTczMC00ZTU5LTgxYTQtYjMwMTg5YTQzYzIw [none]
+[debug] [2026-02-19T01:19:21.921Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/operations/workflows/MTIxOTEwMjAtNTczMC00ZTU5LTgxYTQtYjMwMTg5YTQzYzIw 200
+[debug] [2026-02-19T01:19:21.921Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/operations/workflows/MTIxOTEwMjAtNTczMC00ZTU5LTgxYTQtYjMwMTg5YTQzYzIw {"name":"operations/workflows/MTIxOTEwMjAtNTczMC00ZTU5LTgxYTQtYjMwMTg5YTQzYzIw","done":true,"response":{"@type":"type.googleapis.com/google.firebase.service.v1beta1.FirebaseProject","projectId":"ai-sermon-helper-4815","projectNumber":"62049036197","displayName":"AI Sermon Helper","name":"projects/ai-sermon-helper-4815","resources":{"hostingSite":"ai-sermon-helper-4815"}}}
+[info] 
+[info] 🎉🎉🎉 Your Firebase project is ready! 🎉🎉🎉
+[info] 
+[info] Project information:
+[info]    - Project ID: ai-sermon-helper-4815
+[info]    - Project Name: AI Sermon Helper
+[info] 
+[info] Firebase console is available at
+[info] https://console.firebase.google.com/project/ai-sermon-helper-4815/overview
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-02-19T01:19:34.735Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-02-19T01:19:34.736Z] > authorizing via signed-in user (hsamusdae@gmail.com)
+[debug] [2026-02-19T01:19:34.736Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:34.736Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo [none]
+[debug] [2026-02-19T01:19:34.989Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo 200
+[debug] [2026-02-19T01:19:34.990Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo {"name":"projects/product-builder-code/billingInfo","projectId":"product-builder-code","billingAccountName":"","billingEnabled":false}
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-02-19T01:19:34.996Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-02-19T01:19:34.996Z] > authorizing via signed-in user (hsamusdae@gmail.com)
+[debug] [2026-02-19T01:19:34.998Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:34.998Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo [none]
+[debug] [2026-02-19T01:19:36.051Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo 200
+[debug] [2026-02-19T01:19:36.052Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo {"name":"projects/product-builder-code/billingInfo","projectId":"product-builder-code","billingAccountName":"","billingEnabled":false}
+[debug] [2026-02-19T01:19:36.053Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:36.053Z] >>> [apiv2][query] POST https://firebase.googleapis.com/v1beta1/projects/product-builder-code/webApps [none]
+[debug] [2026-02-19T01:19:36.054Z] >>> [apiv2][body] POST https://firebase.googleapis.com/v1beta1/projects/product-builder-code/webApps {"displayName":"Web App"}
+[debug] [2026-02-19T01:19:38.129Z] <<< [apiv2][status] POST https://firebase.googleapis.com/v1beta1/projects/product-builder-code/webApps 200
+[debug] [2026-02-19T01:19:38.129Z] <<< [apiv2][body] POST https://firebase.googleapis.com/v1beta1/projects/product-builder-code/webApps {"name":"operations/workflows/ZThjYjQ5ODktMjEyMC00NGRlLTlkN2UtYTBlNTlhZDlhMWY5"}
+[debug] [2026-02-19T01:19:38.130Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:38.130Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZThjYjQ5ODktMjEyMC00NGRlLTlkN2UtYTBlNTlhZDlhMWY5 [none]
+[debug] [2026-02-19T01:19:38.518Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZThjYjQ5ODktMjEyMC00NGRlLTlkN2UtYTBlNTlhZDlhMWY5 200
+[debug] [2026-02-19T01:19:38.518Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZThjYjQ5ODktMjEyMC00NGRlLTlkN2UtYTBlNTlhZDlhMWY5 {"name":"operations/workflows/ZThjYjQ5ODktMjEyMC00NGRlLTlkN2UtYTBlNTlhZDlhMWY5"}
+[debug] [2026-02-19T01:19:39.019Z] [Create Web app Poller] Retrying task index 0
+[debug] [2026-02-19T01:19:39.020Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:39.020Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZThjYjQ5ODktMjEyMC00NGRlLTlkN2UtYTBlNTlhZDlhMWY5 [none]
+[debug] [2026-02-19T01:19:39.396Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZThjYjQ5ODktMjEyMC00NGRlLTlkN2UtYTBlNTlhZDlhMWY5 200
+[debug] [2026-02-19T01:19:39.396Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZThjYjQ5ODktMjEyMC00NGRlLTlkN2UtYTBlNTlhZDlhMWY5 {"name":"operations/workflows/ZThjYjQ5ODktMjEyMC00NGRlLTlkN2UtYTBlNTlhZDlhMWY5"}
+[debug] [2026-02-19T01:19:40.396Z] [Create Web app Poller] Retrying task index 0
+[debug] [2026-02-19T01:19:40.397Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:40.397Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZThjYjQ5ODktMjEyMC00NGRlLTlkN2UtYTBlNTlhZDlhMWY5 [none]
+[debug] [2026-02-19T01:19:40.790Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZThjYjQ5ODktMjEyMC00NGRlLTlkN2UtYTBlNTlhZDlhMWY5 200
+[debug] [2026-02-19T01:19:40.790Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZThjYjQ5ODktMjEyMC00NGRlLTlkN2UtYTBlNTlhZDlhMWY5 {"name":"operations/workflows/ZThjYjQ5ODktMjEyMC00NGRlLTlkN2UtYTBlNTlhZDlhMWY5","done":true,"response":{"@type":"type.googleapis.com/google.firebase.service.v1beta1.WebApp","name":"projects/product-builder-code/webApps/1:574340521439:web:5e3ff2c88eb41c9d4f386a","appId":"1:574340521439:web:5e3ff2c88eb41c9d4f386a","displayName":"Web App","projectId":"product-builder-code","webId":"OWFiYTc5YmMtM2I3NC00ZTg4LWExOTItY2ZhZDZjYmNkMDc0","apiKeyId":"6753b2ce-7015-49ee-b11a-ae5ba46bc780","state":"ACTIVE","expireTime":"1970-01-01T00:00:00Z","etag":"1_c757b942-decf-432a-b4c2-18778a798cd5"}}
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-02-19T01:19:52.003Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-02-19T01:19:52.003Z] > authorizing via signed-in user (hsamusdae@gmail.com)
+[debug] [2026-02-19T01:19:52.006Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:52.006Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo [none]
+[debug] [2026-02-19T01:19:52.241Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo 200
+[debug] [2026-02-19T01:19:52.241Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo {"name":"projects/product-builder-code/billingInfo","projectId":"product-builder-code","billingAccountName":"","billingEnabled":false}
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-02-19T01:19:52.246Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-02-19T01:19:52.246Z] > authorizing via signed-in user (hsamusdae@gmail.com)
+[debug] [2026-02-19T01:19:52.247Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:52.247Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo [none]
+[debug] [2026-02-19T01:19:53.278Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo 200
+[debug] [2026-02-19T01:19:53.278Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/product-builder-code/billingInfo {"name":"projects/product-builder-code/billingInfo","projectId":"product-builder-code","billingAccountName":"","billingEnabled":false}
+[debug] [2026-02-19T01:19:53.279Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:53.285Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/product-builder-code:searchApps pageSize=100
+[debug] [2026-02-19T01:19:53.576Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/product-builder-code:searchApps 200
+[debug] [2026-02-19T01:19:53.576Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/product-builder-code:searchApps {"apps":[{"name":"projects/product-builder-code/webApps/1:574340521439:web:5e3ff2c88eb41c9d4f386a","displayName":"Web App","platform":"WEB","appId":"1:574340521439:web:5e3ff2c88eb41c9d4f386a","namespace":"OWFiYTc5YmMtM2I3NC00ZTg4LWExOTItY2ZhZDZjYmNkMDc0","apiKeyId":"6753b2ce-7015-49ee-b11a-ae5ba46bc780","state":"ACTIVE","expireTime":"1970-01-01T00:00:00Z"},{"name":"projects/product-builder-code/webApps/1:574340521439:web:e43248dfcd12480e4f386a","displayName":"My Web App","platform":"WEB","appId":"1:574340521439:web:e43248dfcd12480e4f386a","namespace":"N2NlZjMxMmUtMWE2MS00ZGNhLWE3NmItMDZhMzc0MmFkM2I0","apiKeyId":"6753b2ce-7015-49ee-b11a-ae5ba46bc780","state":"ACTIVE","expireTime":"1970-01-01T00:00:00Z"}]}
+[debug] [2026-02-19T01:19:53.577Z] No OAuth tokens found
+[debug] [2026-02-19T01:19:53.577Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/-/webApps/1:574340521439:web:5e3ff2c88eb41c9d4f386a/config [none]
+[debug] [2026-02-19T01:19:54.137Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/-/webApps/1:574340521439:web:5e3ff2c88eb41c9d4f386a/config 200
+[debug] [2026-02-19T01:19:54.137Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/-/webApps/1:574340521439:web:5e3ff2c88eb41c9d4f386a/config {"projectId":"product-builder-code","appId":"1:574340521439:web:5e3ff2c88eb41c9d4f386a","storageBucket":"product-builder-code.firebasestorage.app","apiKey":"AIzaSyCYX3OOhXG20kULitY1APHz2OPidI_lA2I","authDomain":"product-builder-code.firebaseapp.com","messagingSenderId":"574340521439","projectNumber":"574340521439","version":"2"}
