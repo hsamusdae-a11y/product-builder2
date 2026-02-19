@@ -1,15 +1,8 @@
 {
-  "name": "claude-ai-proxy",
+  "name": "ai-sermon-helper",
   "version": "1.0.0",
-  "description": "A local proxy server for securely calling the Anthropic API.",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "express": "^4.19.2",
-    "@anthropic-ai/sdk": "^0.20.1",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5"
-  }
+  "description": "A web-based Bible study and sermon preparation tool.",
+  "main": "public/main.js",
+  "scripts": {},
+  "dependencies": {}
 }

@@ -1,117 +1,107 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>말씀 중심 스터디 허브</title>
-
-    <!-- Fonts & Icons -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>AI 설교 노트</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header>
+        <h1><i class="fas fa-feather-alt"></i> AI 설교 노트</h1>
+        <nav>
+            <ul>
+                <li><a href="#" onclick="showSection('intro', this)" class="nav-link active-nav"><i class="fas fa-home"></i> 시작</a></li>
+                <li><a href="#" onclick="showSection('sermon-notes', this)" class="nav-link"><i class="fas fa-pencil-alt"></i> 설교 작성</a></li>
+                <li><a href="#" onclick="showSection('daily-verse', this)" class="nav-link"><i class="fas fa-bible"></i> 오늘의 말씀</a></li>
+                <li><a href="#" onclick="showSection('meditation-helper', this)" class="nav-link"><i class="fas fa-pray"></i> 말씀 묵상</a></li>
+                <li><a href="#" onclick="showSection('concordance', this)" class="nav-link"><i class="fas fa-search"></i> 성경 검색</a></li>
+                <li><a href="#" onclick="showSection('original-language-search', this)" class="nav-link"><i class="fas fa-language"></i> 원어 검색</a></li>
+            </ul>
+        </nav>
+    </header>
 
-<header>
-    <nav>
-        <div class="logo">말씀 스터디 허브</div>
-        <ul>
-            <li><a href="#" class="nav-link" onclick="showSection('intro', this)"><i class="fas fa-home"></i>안내</a></li>
-            <li><a href="https://www.bskorea.or.kr/bible/korbibReadpage.php?version=GAE&book=gen&chap=1&sec=1" target="_blank" class="nav-link"><i class="fas fa-book-open"></i>성경(한/영)</a></li>
-            <li><a href="https://www.bskorea.or.kr/bible/korbibSearchlist.php" target="_blank" class="nav-link"><i class="fas fa-search"></i>성구사전</a></li>
-            <li><a href="https://www.bskorea.or.kr/prog/popup_term.php" target="_blank" class="nav-link"><i class="fas fa-atlas"></i>단어사전</a></li>
-            <li><a href="https://biblehub.com/interlinear/genesis/1-1.htm" target="_blank" class="nav-link"><i class="fas fa-language"></i>원어성경</a></li>
-            <li><a href="https://www.openbible.info/geo/" target="_blank" class="nav-link"><i class="fas fa-map-marked-alt"></i>성경 지도</a></li>
-            <li><a href="#" class="nav-link" onclick="showSection('sermon', this)"><i class="fas fa-pencil-alt"></i>설교작성</a></li>
-        </ul>
-    </nav>
-</header>
+    <main>
+        <div class="container">
+            <section id="intro" class="active">
+                <h2><i class="fas fa-info-circle"></i> 시작하기</h2>
+                <p>말씀 스터디 허브에 오신 것을 환영합니다. 이곳은 성경 연구와 설교 준비를 위한 통합 플랫폼입니다. (성경 버전: 개역개정)</p>
+                <p>상단의 메뉴를 클릭하여 다양한 기능을 활용해 보세요.</p>
+            </section>
 
-<div class="container">
-    <section id="intro" class="active">
-        <h2><i class="fas fa-info-circle"></i> 시작하기</h2>
-        <p>말씀 스터디 허브에 오신 것을 환영합니다. 이곳은 성경 연구와 설교 준비를 위한 통합 플랫폼입니다.</p>
-        <p>상단의 메뉴를 클릭하여 다양한 기능을 활용해 보세요. <b>외부 도구(성경, 성구사전 등)는 새 탭에서 열립니다.</b></p>
-    </section>
-
-    <section id="sermon">
-        <h2><i class="fas fa-pencil-alt"></i> AI 설교 조수</h2>
-        
-        <div class="content-grid">
-            <!-- 좌측: 핵심 항목 및 성경 구절 입력 -->
-            <div class="main-content">
-                <div class="tool-group">
-                    <label for="corePoints"><i class="fas fa-key"></i> 핵심 항목</label>
-                    <textarea id="corePoints" rows="5" placeholder="설교의 핵심 내용을 요약하여 입력하세요..."></textarea>
+            <section id="sermon-notes">
+                <h2><i class="fas fa-file-alt"></i> 설교 노트 작성</h2>
+                <div class="form-group">
+                    <label for="sermonTitle">설교 제목</label>
+                    <input type="text" id="sermonTitle" placeholder="설교의 제목을 입력하세요">
                 </div>
-                <div class="tool-group">
-                    <label for="sermonVerseText"><i class="fas fa-bible"></i> 성경 구절</label>
-                    <textarea id="sermonVerseText" rows="7" placeholder="아래에서 성경 구절을 검색하여 추가하거나, 직접 입력하세요..."></textarea>
-                </div>
-            </div>
-
-            <!-- 우측: 성경 구절 검색 -->
-            <div class="sidebar">
-                <div class="tool-group">
-                    <label for="verseSearchInput"><i class="fas fa-search"></i> 성경 구절 검색</label>
+                <div class="form-group">
+                    <label for="verseSearchInput">성경 구절 검색 (예: 창1:1)</label>
                     <div class="search-wrapper">
-                        <input type="text" id="verseSearchInput" placeholder="예: 창세기 1:1">
-                        <button id="verseSearchBtn" class="btn-icon"><i class="fas fa-search"></i></button>
+                        <input type="text" id="verseSearchInput" placeholder="빠른 구절 검색">
+                        <button id="verseSearchBtn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div id="verseSearchResult" style="display:none;">
+                        <p id="verseResultText"></p>
+                        <button id="addVerseBtn" style="display:none;"><i class="fas fa-plus-circle"></i> 본문에 추가</button>
                     </div>
                 </div>
-                <div id="verseSearchResult" class="search-result-box" style="display: none;">
-                    <p id="verseResultText"></p>
-                    <button id="addVerseBtn" class="btn-small">구절 추가</button>
+                <div class="form-group">
+                    <label for="sermonVerseText">성경 구절</label>
+                    <textarea id="sermonVerseText" rows="8" placeholder="검색하거나 직접 성경 구절을 입력하세요."></textarea>
                 </div>
-            </div>
-        </div>
-
-        <hr class="divider">
-
-        <div class="sermon-generation-area">
-            <h3><i class="fas fa-robot"></i> AI 설교 개요 생성</h3>
-            <div class="sermon-tool-grid">
-                <div class="tool-group">
-                    <label for="sermonTopic">1. 설교 주제 입력</label>
-                    <input type="text" id="sermonTopic" placeholder="예: 하나님의 사랑">
+                <div class="form-group">
+                    <label for="sermonMessage">메시지 / 설교 개요</label>
+                    <textarea id="sermonMessage" rows="10" placeholder="설교의 핵심 메시지나 개요를 작성하세요."></textarea>
                 </div>
-                <div class="tool-group">
-                    <label>2. 설교 시간 선택</label>
-                    <div class="time-selector">
-                        <button class="time-btn" data-time="5">5분</button>
-                        <button class="time-btn active-time" data-time="10">10분</button>
-                        <button class="time-btn" data-time="30">30분</button>
+                <button onclick="generateSermon()" class="cta-button"><i class="fas fa-robot"></i> AI 설교 개요 생성</button>
+            </section>
+
+            <section id="daily-verse">
+                <h2><i class="fas fa-bible"></i> 오늘의 말씀</h2>
+                <p>매일 새로운 말씀을 통해 영감을 얻으세요.</p>
+                <button id="getDailyVerseBtn" class="cta-button">새로운 말씀 받기</button>
+                <div id="dailyVerseResult" class="result-item" style="display: none; margin-top: 1.5rem;">
+                    <p id="dailyVerseText"></p>
+                </div>
+            </section>
+
+            <section id="meditation-helper">
+                <h2><i class="fas fa-pray"></i> 말씀 묵상 도우미</h2>
+                <p>선택한 구절을 깊이 묵상할 수 있도록 돕는 질문들입니다. (AI 기능)</p>
+                <div class="form-group">
+                    <label for="meditationVerse">묵상할 구절</label>
+                    <textarea id="meditationVerse" rows="4" placeholder="설교 노트의 본문 구절을 사용하거나, 직접 구절을 여기에 붙여넣으세요."></textarea>
+                </div>
+                <button onclick="generateMeditationQuestions()" class="cta-button">묵상 질문 생성하기</button>
+                <div id="meditationQuestions" class="results-container" style="margin-top: 1.5rem;"></div>
+            </section>
+
+            <section id="concordance">
+                <h2><i class="fas fa-search"></i> 성경 검색 (내부)</h2>
+                <div class="form-group">
+                    <label for="concordanceSearchInput">검색할 단어를 입력하세요</label>
+                    <div class="search-wrapper">
+                        <input type="text" id="concordanceSearchInput" placeholder="예: 사랑, 믿음, 천지">
+                        <button id="concordanceSearchBtn"><i class="fas fa-search"></i></button>
                     </div>
                 </div>
-            </div>
-            <button class="btn-main" onclick="generateSermon()">AI 설교 개요 생성하기</button>
-        </div>
+                <div id="concordanceResults" class="results-container">
+                    <p>이곳에 검색 결과가 표시됩니다.</p>
+                </div>
+            </section>
+            
+            <section id="original-language-search">
+                <h2><i class="fas fa-language"></i> 원어 검색 (외부 링크)</h2>
+                <p>원어(히브리어, 헬라어) 성경 검색을 위해 신뢰도 높은 외부 사이트로 이동합니다. 새 탭에서 열립니다.</p>
+                <a href="https://biblehub.com/" target="_blank" class="cta-button"><i class="fas fa-external-link-alt"></i> Bible Hub 사이트 바로가기</a>
+            </section>
 
-        <div id="resultArea" class="sermon-result" style="display: none; margin-top: 40px;">
-            <h3 id="generatedTitle" style="text-align: center;"></h3>
-            <button id="copySermonBtn" class="btn-icon btn-copy"><i class="fas fa-copy"></i> 복사</button>
-            <div class="three-point-grid">
-                <div class="point-box">
-                    <h4><i class="fas fa-seedling"></i> 1. 서론 (Introduction)</h4>
-                    <p id="p1"></p>
-                </div>
-                <div class="point-box">
-                    <h4><i class="fas fa-cross"></i> 2. 본론 (Body)</h4>
-                    <p id="p2"></p>
-                </div>
-                <div class="point-box">
-                    <h4><i class="fas fa-praying-hands"></i> 3. 결론 (Conclusion)</h4>
-                    <p id="p3"></p>
-                </div>
-            </div>
         </div>
-    </section>
-</div>
+    </main>
 
-<script src="main.js"></script>
+    <script src="bible_abbreviations.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>

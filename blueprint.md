@@ -1,45 +1,55 @@
-# Blueprint: 말씀 중심 스터디 허브 (Word Study Hub)
+# AI 설교 노트 앱
 
-## Overview
+## 목적과 기능
 
-This document outlines the structure and functionality of the "말씀 중심 스터디 허브," a web application designed to be an integrated platform for bible study and sermon preparation. The application was imported from an existing deployment and now serves as the project's foundation.
+이 애플리케이션은 사용자가 성경 구절을 동적으로 검색하고, 검색된 구절을 설교 노트에 추가하며, 최종적으로 AI를 활용하여 설교 개요를 생성할 수 있도록 돕는 웹 기반 도구입니다. 사용자는 전체 성경 구절을 손쉽게 참조하고, 이를 바탕으로 설교의 구조를 체계적으로 구성할 수 있습니다.
 
-The application is built with vanilla HTML, CSS, and JavaScript, focusing on providing a clean user interface and practical tools for pastors, students, and anyone interested in deeper bible study.
+### 핵심 기능:
 
-## Core Features & Design
+1.  **동적 성경 구절 검색**:
+    *   사용자는 책, 장, 절 형식(예: `창 1:1`)으로 성경 구절을 입력하여 검색할 수 있습니다.
+    *   검색 결과는 실시간으로 화면에 표시되며, 효율적인 데이터 관리를 위해 각 성경 책의 데이터는 필요할 때 동적으로 로드됩니다.
+    *   한글 약어(예: `창`, `마`)와 전체 이름(예: `창세기`, `마태복음`)을 모두 지원하여 사용자 편의성을 높였습니다.
 
-### Implemented Features
+2.  **설교 노트 작성**:
+    *   검색된 성경 구절을 클릭 한 번으로 설교 노트 텍스트 영역에 추가할 수 있습니다.
+    *   사용자는 노트에 자유롭게 내용을 추가하고 수정하며 설교의 기반을 다질 수 있습니다.
 
-*   **Single-Page Interface:** The application uses a single page with sections that are dynamically shown or hidden, providing a smooth user experience without full page reloads.
-*   **Navigation:**
-    *   **Internal Navigation:** Users can switch between an "Introduction" section (`안내`) and a "Sermon Authoring" section (`설교작성`).
-    *   **External Links:** A comprehensive set of links to essential external bible study tools, which open in new tabs:
-        *   Korean/English Bible (대한성서공회)
-        *   Concordance (성구사전)
-        *   Dictionary (단어사전)
-        *   Interlinear Bible (원어성경 - BibleHub)
-        *   Bible Maps (성경 지도 - OpenBible.info)
-*   **AI Sermon Assistant (`AI 설교 조수`):**
-    *   **Input Fields:** Text areas for users to input "Core Points" (`핵심 항목`) and "Bible Verses" (`성경 구절`).
-    *   **Bible Verse Search:** An integrated search tool that fetches bible verses using the `bible-api.com` API. It supports Korean book names and abbreviations (e.g., "창세기" or "창").
-    *   **AI Sermon Outline Generation:**
-        *   Users can input a sermon topic.
-        *   Users can select a desired sermon length (5, 10, or 30 minutes).
-        *   The application generates a structured three-point sermon outline (Introduction, Body, Conclusion) based on the provided topic, verses, and selected time.
-    *   **Copy to Clipboard:** A button allows the user to easily copy the generated sermon outline.
+3.  **AI 설교 개요 생성 (개발 중)**:
+    *   작성된 설교 노트(제목, 본문 구절, 메시지)를 기반으로 AI가 설교의 서론, 본론, 결론을 포함한 구조화된 개요를 생성합니다.
+    *   이 기능은 사용자가 설교의 논리적 흐름을 잡고 아이디어를 구체화하는 데 도움을 줄 것입니다.
 
-### Visual Design & Aesthetics
+## 애플리케이션 설계
 
-*   **Typography:** Utilizes "Noto Serif KR" for titles and "Noto Sans KR" for body text, creating a clean and readable feel suitable for the content.
-*   **Color Palette:** A professional and calm color scheme with a primary color of dark blue-gray (`#2c3e50`) and an accent color of a pleasant blue (`#5D9CEC`).
-*   **Layout:**
-    *   A responsive, centered layout with a maximum width for comfortable reading on large screens.
-    *   A sticky header with a modern `backdrop-filter` (blur) effect for a premium feel.
-    *   Content is organized into cards with soft shadows (`box-shadow`), giving the UI depth.
-    *   Grid and Flexbox are used for modern, responsive component alignment.
-*   **Iconography:** Font Awesome icons are used throughout the navigation and section titles to improve usability and visual appeal.
-*   **Interactivity:** Buttons and inputs have clear hover and focus states, providing good user feedback. Active states are clearly indicated (e.g., active navigation link, selected time).
+### 스타일 및 디자인
 
-## Current Action Plan
+*   **레이아웃**: 현대적이고 직관적인 사용자 경험을 제공하기 위해 단일 페이지 애플리케이션(SPA) 스타일의 레이아웃을 채택했습니다. 메인 화면은 어두운 배경에 흰색 텍스트를 사용하여 가독성을 높였고, 네온 효과가 적용된 활성 메뉴 항목으로 시각적 포인트를 주었습니다.
+*   **폰트**: 가독성이 뛰어난 `Nanum Gothic`을 기본 폰트로 사용합니다.
+*   **색상**: 주조색은 검정과 네온 블루를 사용하여 차분하면서도 현대적인 느낌을 줍니다.
+*   **아이콘**: `Font Awesome` 아이콘을 활용하여 각 기능(검색, 추가 등)을 시각적으로 명확하게 표현합니다.
+*   **반응형 디자인**: 모바일, 태블릿, 데스크톱 등 다양한 화면 크기에 맞춰 레이아웃이 유연하게 조정됩니다.
 
-The project has been successfully updated with the code from the provided Cloudflare URL. The current application is fully functional. The next steps will be determined by the user's upcoming requests for modifications or new features.
+### 파일 구조
+
+*   `index.html`: 애플리케이션의 기본 구조를 정의하는 주 HTML 파일입니다.
+*   `style.css`: 전체 애플리케이션의 스타일과 디자인을 담당하는 CSS 파일입니다.
+*   `main.js`: 성경 구절 검색, 노트 추가, UI 상호작용 등 핵심 로직을 처리하는 주 JavaScript 파일입니다.
+*   `bible_abbreviations.js`: 성경 책의 한글 약어와 전체 이름을 매핑하는 데이터를 담고 있습니다.
+*   `bible/` (디렉토리):
+    *   각 성경 책의 데이터가 별도의 JavaScript 파일(예: `genesis.js`, `john.js`)로 저장되어 필요에 따라 동적으로 로드됩니다. 이는 초기 로딩 시간을 줄이고 성능을 최적화합니다.
+
+## 현재까지의 구현 내용
+
+*   **기본 UI 구조 설정**: `index.html`과 `style.css`를 통해 앱의 기본 레이아웃, 색상, 폰트 등 시각적 요소를 구현했습니다.
+*   **성경 검색 기능**: `main.js`와 `bible_abbreviations.js`를 통해 사용자가 입력한 검색어(예: `창 1:1`)를 파싱하고, `bible/` 디렉토리에서 해당 성경 데이터를 동적으로 로드하여 결과를 표시하는 기능을 완성했습니다.
+*   **설교 노트 연동**: 검색된 구절을 ‘노트에 추가’ 버튼을 통해 `textarea`에 추가하는 기능을 구현했습니다.
+*   **성경 데이터 추가**: 창세기부터 디모데후서까지의 성경 데이터를 `bible` 디렉토리에 추가하고, `main.js`에 해당 책들을 로드할 수 있도록 설정했습니다.
+*   **아이콘 라이브러리 연동**: `Font Awesome`을 CDN으로 추가하여 아이콘을 활용할 수 있도록 설정했습니다.
+
+## 다음 단계 계획
+
+1.  **AI 설교 개요 생성 기능 구현**: Google AI(Gemini) API와 연동하여 사용자가 작성한 노트를 기반으로 설교 개요를 생성하는 기능을 개발합니다. 이를 위해 서버 사이드 로직 또는 클라우드 함수(Cloud Functions)를 도입할 수 있습니다.
+2.  **전체 성경 데이터 추가**: 현재 추가된 책 외에 나머지 모든 성경 책의 데이터를 `bible` 디렉토리에 추가하고, `main.js`의 `BOOK_TO_FILENAME` 객체를 업데이트합니다.
+3.  **사용자 인증**: 사용자가 자신의 설교 노트를 저장하고 관리할 수 있도록 Firebase 인증을 통한 로그인 기능을 추가합니다.
+4.  **데이터베이스 연동**: Firestore와 같은 데이터베이스를 사용하여 사용자의 설교 노트를 클라우드에 저장하고, 여러 기기에서 동기화할 수 있도록 합니다.
+5.  **고급 검색 기능**: 특정 단어나 구문을 포함하는 구절을 검색하는 등 텍스트 기반 검색 기능을 추가하여 사용자 편의성을 높입니다.
