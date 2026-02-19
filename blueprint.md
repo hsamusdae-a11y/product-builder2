@@ -1,33 +1,45 @@
-# Project Blueprint
+# Blueprint: 말씀 중심 스터디 허브 (Word Study Hub)
 
 ## Overview
 
-A simple and modern web application that demonstrates the use of Web Components, modern CSS, and modern JavaScript to create an interactive user experience, including a real-time question and answer feature powered by Firebase.
+This document outlines the structure and functionality of the "말씀 중심 스터디 허브," a web application designed to be an integrated platform for bible study and sermon preparation. The application was imported from an existing deployment and now serves as the project's foundation.
 
-## Implemented Features
+The application is built with vanilla HTML, CSS, and JavaScript, focusing on providing a clean user interface and practical tools for pastors, students, and anyone interested in deeper bible study.
 
-*   **HTML Structure:** Basic HTML5 document (`index.html`).
-*   **Styling:** A single stylesheet (`style.css`).
-*   **Scripting:** A single JavaScript file (`main.js`).
-*   **Web Components:**
-    *   `<simple-greeting>`: Displays a personalized greeting.
+## Core Features & Design
 
-## Current Plan: Add a Firebase-Powered Question Box
+### Implemented Features
 
-I will implement a feature that allows users to submit questions and see them displayed in real-time. This will be powered by Google's Firebase (Firestore).
+*   **Single-Page Interface:** The application uses a single page with sections that are dynamically shown or hidden, providing a smooth user experience without full page reloads.
+*   **Navigation:**
+    *   **Internal Navigation:** Users can switch between an "Introduction" section (`안내`) and a "Sermon Authoring" section (`설교작성`).
+    *   **External Links:** A comprehensive set of links to essential external bible study tools, which open in new tabs:
+        *   Korean/English Bible (대한성서공회)
+        *   Concordance (성구사전)
+        *   Dictionary (단어사전)
+        *   Interlinear Bible (원어성경 - BibleHub)
+        *   Bible Maps (성경 지도 - OpenBible.info)
+*   **AI Sermon Assistant (`AI 설교 조수`):**
+    *   **Input Fields:** Text areas for users to input "Core Points" (`핵심 항목`) and "Bible Verses" (`성경 구절`).
+    *   **Bible Verse Search:** An integrated search tool that fetches bible verses using the `bible-api.com` API. It supports Korean book names and abbreviations (e.g., "창세기" or "창").
+    *   **AI Sermon Outline Generation:**
+        *   Users can input a sermon topic.
+        *   Users can select a desired sermon length (5, 10, or 30 minutes).
+        *   The application generates a structured three-point sermon outline (Introduction, Body, Conclusion) based on the provided topic, verses, and selected time.
+    *   **Copy to Clipboard:** A button allows the user to easily copy the generated sermon outline.
 
-### Steps:
+### Visual Design & Aesthetics
 
-1.  **Update `blueprint.md`:** Reflect the new plan to add the question box feature.
-2.  **Configure Firebase:**
-    *   Update `.idx/mcp.json` to run the Firebase local development server.
-    *   Add Firebase SDKs and a configuration placeholder to `index.html`.
-3.  **Create UI Components:**
-    *   **`<question-form>` Web Component:** An input form for users to submit new questions.
-    *   **`<question-list>` Web Component:** A component to display the list of submitted questions from Firestore.
-4.  **Implement Firebase Logic:**
-    *   In `main.js`, initialize Firebase.
-    *   Write a function to save new questions to the "questions" collection in Firestore.
-    *   Write a function to listen for real-time updates from the "questions" collection and display them.
-5.  **Apply Modern Styling:**
-    *   Update `style.css` to create a clean, modern, and visually appealing interface for the question form and list, following the project's design guidelines.
+*   **Typography:** Utilizes "Noto Serif KR" for titles and "Noto Sans KR" for body text, creating a clean and readable feel suitable for the content.
+*   **Color Palette:** A professional and calm color scheme with a primary color of dark blue-gray (`#2c3e50`) and an accent color of a pleasant blue (`#5D9CEC`).
+*   **Layout:**
+    *   A responsive, centered layout with a maximum width for comfortable reading on large screens.
+    *   A sticky header with a modern `backdrop-filter` (blur) effect for a premium feel.
+    *   Content is organized into cards with soft shadows (`box-shadow`), giving the UI depth.
+    *   Grid and Flexbox are used for modern, responsive component alignment.
+*   **Iconography:** Font Awesome icons are used throughout the navigation and section titles to improve usability and visual appeal.
+*   **Interactivity:** Buttons and inputs have clear hover and focus states, providing good user feedback. Active states are clearly indicated (e.g., active navigation link, selected time).
+
+## Current Action Plan
+
+The project has been successfully updated with the code from the provided Cloudflare URL. The current application is fully functional. The next steps will be determined by the user's upcoming requests for modifications or new features.

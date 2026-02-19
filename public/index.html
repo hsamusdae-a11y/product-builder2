@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>말씀 중심 스터디 허브</title>
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <nav>
+        <div class="logo">말씀 스터디 허브</div>
+        <ul>
+            <li><a href="#" class="nav-link" onclick="showSection('intro', this)"><i class="fas fa-home"></i>안내</a></li>
+            <li><a href="https://www.bskorea.or.kr/bible/korbibReadpage.php?version=GAE&book=gen&chap=1&sec=1" target="_blank" class="nav-link"><i class="fas fa-book-open"></i>성경(한/영)</a></li>
+            <li><a href="https://www.bskorea.or.kr/bible/korbibSearchlist.php" target="_blank" class="nav-link"><i class="fas fa-search"></i>성구사전</a></li>
+            <li><a href="https://www.bskorea.or.kr/prog/popup_term.php" target="_blank" class="nav-link"><i class="fas fa-atlas"></i>단어사전</a></li>
+            <li><a href="https://biblehub.com/interlinear/genesis/1-1.htm" target="_blank" class="nav-link"><i class="fas fa-language"></i>원어성경</a></li>
+            <li><a href="https://www.openbible.info/geo/" target="_blank" class="nav-link"><i class="fas fa-map-marked-alt"></i>성경 지도</a></li>
+            <li><a href="#" class="nav-link" onclick="showSection('sermon', this)"><i class="fas fa-pencil-alt"></i>설교작성</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <section id="intro" class="active">
+        <h2><i class="fas fa-info-circle"></i> 시작하기</h2>
+        <p>말씀 스터디 허브에 오신 것을 환영합니다. 이곳은 성경 연구와 설교 준비를 위한 통합 플랫폼입니다.</p>
+        <p>상단의 메뉴를 클릭하여 다양한 기능을 활용해 보세요. <b>외부 도구(성경, 성구사전 등)는 새 탭에서 열립니다.</b></p>
+    </section>
+
+    <section id="sermon">
+        <h2><i class="fas fa-pencil-alt"></i> AI 설교 조수</h2>
+        
+        <div class="content-grid">
+            <!-- 좌측: 핵심 항목 및 성경 구절 입력 -->
+            <div class="main-content">
+                <div class="tool-group">
+                    <label for="corePoints"><i class="fas fa-key"></i> 핵심 항목</label>
+                    <textarea id="corePoints" rows="5" placeholder="설교의 핵심 내용을 요약하여 입력하세요..."></textarea>
+                </div>
+                <div class="tool-group">
+                    <label for="sermonVerseText"><i class="fas fa-bible"></i> 성경 구절</label>
+                    <textarea id="sermonVerseText" rows="7" placeholder="아래에서 성경 구절을 검색하여 추가하거나, 직접 입력하세요..."></textarea>
+                </div>
+            </div>
+
+            <!-- 우측: 성경 구절 검색 -->
+            <div class="sidebar">
+                <div class="tool-group">
+                    <label for="verseSearchInput"><i class="fas fa-search"></i> 성경 구절 검색</label>
+                    <div class="search-wrapper">
+                        <input type="text" id="verseSearchInput" placeholder="예: 창세기 1:1">
+                        <button id="verseSearchBtn" class="btn-icon"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                <div id="verseSearchResult" class="search-result-box" style="display: none;">
+                    <p id="verseResultText"></p>
+                    <button id="addVerseBtn" class="btn-small">구절 추가</button>
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="sermon-generation-area">
+            <h3><i class="fas fa-robot"></i> AI 설교 개요 생성</h3>
+            <div class="sermon-tool-grid">
+                <div class="tool-group">
+                    <label for="sermonTopic">1. 설교 주제 입력</label>
+                    <input type="text" id="sermonTopic" placeholder="예: 하나님의 사랑">
+                </div>
+                <div class="tool-group">
+                    <label>2. 설교 시간 선택</label>
+                    <div class="time-selector">
+                        <button class="time-btn" data-time="5">5분</button>
+                        <button class="time-btn active-time" data-time="10">10분</button>
+                        <button class="time-btn" data-time="30">30분</button>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-main" onclick="generateSermon()">AI 설교 개요 생성하기</button>
+        </div>
+
+        <div id="resultArea" class="sermon-result" style="display: none; margin-top: 40px;">
+            <h3 id="generatedTitle" style="text-align: center;"></h3>
+            <button id="copySermonBtn" class="btn-icon btn-copy"><i class="fas fa-copy"></i> 복사</button>
+            <div class="three-point-grid">
+                <div class="point-box">
+                    <h4><i class="fas fa-seedling"></i> 1. 서론 (Introduction)</h4>
+                    <p id="p1"></p>
+                </div>
+                <div class="point-box">
+                    <h4><i class="fas fa-cross"></i> 2. 본론 (Body)</h4>
+                    <p id="p2"></p>
+                </div>
+                <div class="point-box">
+                    <h4><i class="fas fa-praying-hands"></i> 3. 결론 (Conclusion)</h4>
+                    <p id="p3"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
