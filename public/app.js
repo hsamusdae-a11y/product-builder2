@@ -1109,20 +1109,37 @@ function processVoiceCommand(command) {
 
 // ===== 유틸리티 함수 =====
 function getAppCurrentUser() {
-    // 1. localStorage 직접 확인 (가장 확실함)
-    const userSession = localStorage.getItem('currentUser');
-    if (userSession) {
-        try {
-            return JSON.parse(userSession);
-        } catch (e) {
-            console.error("Session parse error", e);
+    // 1. 전역 변수 확인 (가장 빠르고 확실함)
+    if (window.currentUser) {
+        return window.currentUser;
+    }
+    
+    // 2. auth.js의 getter 함수 확인
+    if (typeof getCurrentUser === 'function') {
+        const user = getCurrentUser();
+        if (user) {
+            window.currentUser = user; // 동기화
+            return user;
         }
     }
     
-    // 2. auth.js의 전역 변수 확인
-    if (typeof getCurrentUser === 'function') {
-        const user = getCurrentUser();
-        if (user) return user;
+    // 3. localStorage 직접 확인 (마지막 수단)
+    const userSession = localStorage.getItem('currentUser');
+    if (userSession) {
+        try {
+            if (userSession.startsWith('{')) {
+                const user = JSON.parse(userSession);
+                window.currentUser = user;
+                return user;
+            } else {
+                // 단순 이메일 문자열인 경우
+                const user = { email: userSession, name: '사용자', position: '성도' };
+                window.currentUser = user;
+                return user;
+            }
+        } catch (e) {
+            console.error("Session parse error", e);
+        }
     }
     
     return null;
