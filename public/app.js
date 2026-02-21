@@ -71,7 +71,71 @@ function navigateTo(pageName) {
             loadBibleGuide();
         } else if (pageName === 'admin') {
             loadAdminData();
+        } else if (pageName === 'sermon') {
+            if (currentSermonStep === 1) goToSermonFirstStep();
         }
+    }
+}
+
+// ===== 설교 작성용 성경 검색 (복구된 기능) =====
+let lastSearchedVerseText = "";
+
+async function searchVerseForSermon() {
+    const query = document.getElementById('sermon-verse-search').value.trim();
+    const resultDiv = document.getElementById('sermon-verse-result');
+    const addBtn = document.getElementById('add-verse-to-sermon');
+    
+    if (!query) return;
+
+    // "창 1:1" 형식 파싱
+    const regex = /^(\d?\s*[가-힣]+|[a-zA-Z]+)\s*(\d+):(\d+)$/;
+    const match = query.match(regex);
+
+    if (!match) {
+        resultDiv.textContent = "형식 오류 (예: 창 1:1)";
+        addBtn.style.display = "none";
+        return;
+    }
+
+    const bookInput = match[1].trim();
+    const chapter = match[2];
+    const verse = match[3];
+    const bookKey = window.BIBLE_ABBREVIATIONS[bookInput];
+
+    if (!bookKey) {
+        resultDiv.textContent = "성경을 찾을 수 없습니다.";
+        addBtn.style.display = "none";
+        return;
+    }
+
+    resultDiv.textContent = "검색 중...";
+    
+    try {
+        await loadBibleBook(bookKey);
+        const bookName = window.BIBLE_BOOKS[bookKey];
+        const bookData = window.BIBLE_DATA[bookKey];
+        const verseText = bookData?.[chapter]?.[verse];
+
+        if (verseText) {
+            lastSearchedVerseText = `[${bookName} ${chapter}:${verse}] ${verseText}`;
+            resultDiv.textContent = lastSearchedVerseText;
+            addBtn.style.display = "block";
+        } else {
+            resultDiv.textContent = "해당 구절을 찾을 수 없습니다.";
+            addBtn.style.display = "none";
+        }
+    } catch (e) {
+        resultDiv.textContent = "오류 발생";
+        console.error(e);
+    }
+}
+
+function addVerseToSermonContent() {
+    const contentArea = document.getElementById('sermon-content');
+    if (lastSearchedVerseText && contentArea) {
+        const currentContent = contentArea.value;
+        contentArea.value = currentContent ? `${currentContent}\n\n${lastSearchedVerseText}` : lastSearchedVerseText;
+        alert("본문에 추가되었습니다.");
     }
 }
 
