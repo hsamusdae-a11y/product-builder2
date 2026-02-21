@@ -623,7 +623,7 @@ function proceedToFinalEdit() {
 
 // ===== 설교 저장 =====
 function saveSermon() {
-    const currentUser = getCurrentUser();
+    const currentUser = getAppCurrentUser();
     if (!currentUser) {
         alert('로그인이 필요한 기능입니다.');
         const authPage = document.getElementById('auth-page');
@@ -795,7 +795,7 @@ function clearSermon() {
 
 // ===== 내 설교 관리 =====
 function loadMySermons() {
-    const currentUser = getCurrentUser();
+    const currentUser = getAppCurrentUser();
     const container = document.getElementById('my-sermons-list');
     
     if (!currentUser) {
@@ -954,7 +954,7 @@ function filterBoardPosts() {
 }
 
 function showBoardPostForm() {
-    const currentUser = getCurrentUser();
+    const currentUser = getAppCurrentUser();
     if (!currentUser) {
         alert('로그인이 필요한 기능입니다.');
         const authPage = document.getElementById('auth-page');
@@ -978,7 +978,7 @@ function cancelBoardPost() {
 }
 
 function submitBoardPost() {
-    const currentUser = getCurrentUser();
+    const currentUser = getAppCurrentUser();
     if (!currentUser) return;
     
     const category = document.getElementById('post-category').value;
@@ -1043,7 +1043,7 @@ function deletePost(id) {
 }
 
 function canDeletePost(post) {
-    const currentUser = getCurrentUser();
+    const currentUser = getAppCurrentUser();
     if (!currentUser) return false;
     return post.userId === currentUser.email || currentUser.level >= 3;
 }
@@ -1105,10 +1105,16 @@ function processVoiceCommand(command) {
 }
 
 // ===== 유틸리티 함수 =====
-function getCurrentUser() {
-    const userEmail = localStorage.getItem('currentUser');
-    if (!userEmail) return null;
-    
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    return users.find(u => u.email === userEmail);
+// auth.js의 getCurrentUser를 사용하므로 여기서는 중복 정의를 제거하거나 auth.js와 호환되도록 수정합니다.
+function getAppCurrentUser() {
+    if (typeof getCurrentUser === 'function') {
+        return getCurrentUser();
+    }
+    const userSession = localStorage.getItem('currentUser');
+    if (!userSession) return null;
+    try {
+        return JSON.parse(userSession);
+    } catch (e) {
+        return null;
+    }
 }
