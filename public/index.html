@@ -3,105 +3,431 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 설교 노트</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <title>AI 성경 노트 - 통합 버전</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1><i class="fas fa-feather-alt"></i> AI 설교 노트</h1>
-        <nav>
-            <ul>
-                <li><a href="#" onclick="showSection('intro', this)" class="nav-link active-nav"><i class="fas fa-home"></i> 시작</a></li>
-                <li><a href="#" onclick="showSection('sermon-notes', this)" class="nav-link"><i class="fas fa-pencil-alt"></i> 설교 작성</a></li>
-                <li><a href="#" onclick="showSection('daily-verse', this)" class="nav-link"><i class="fas fa-bible"></i> 오늘의 말씀</a></li>
-                <li><a href="#" onclick="showSection('meditation-helper', this)" class="nav-link"><i class="fas fa-pray"></i> 말씀 묵상</a></li>
-                <li><a href="#" onclick="showSection('concordance', this)" class="nav-link"><i class="fas fa-search"></i> 성경 검색</a></li>
-                <li><a href="#" onclick="showSection('original-language-search', this)" class="nav-link"><i class="fas fa-language"></i> 원어 검색</a></li>
-            </ul>
-        </nav>
-    </header>
+    <!-- 로그인 화면 -->
+    <div id="auth-page" class="auth-container">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <h1>🙏 AI 성경 노트</h1>
+                <p>믿음과 기술의 만남</p>
+            </div>
 
-    <main>
-        <div class="container">
-            <section id="intro" class="active">
-                <h2><i class="fas fa-info-circle"></i> 시작하기</h2>
-                <p>말씀 스터디 허브에 오신 것을 환영합니다. 이곳은 성경 연구와 설교 준비를 위한 통합 플랫폼입니다. (성경 버전: 개역개정)</p>
-                <p>상단의 메뉴를 클릭하여 다양한 기능을 활용해 보세요.</p>
-            </section>
-
-            <section id="sermon-notes">
-                <h2><i class="fas fa-file-alt"></i> 설교 노트 작성</h2>
-                <div class="form-group">
-                    <label for="sermonTitle">설교 제목</label>
-                    <input type="text" id="sermonTitle" placeholder="설교의 제목을 입력하세요">
-                </div>
-                <div class="form-group">
-                    <label for="verseSearchInput">성경 구절 검색 (예: 창1:1)</label>
-                    <div class="search-wrapper">
-                        <input type="text" id="verseSearchInput" placeholder="빠른 구절 검색">
-                        <button id="verseSearchBtn"><i class="fas fa-search"></i></button>
+            <!-- 로그인 폼 -->
+            <div id="login-form-container" class="auth-form">
+                <h2>로그인</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label>이메일</label>
+                        <input type="email" id="login-email" required>
                     </div>
-                    <div id="verseSearchResult" style="display:none;">
-                        <p id="verseResultText"></p>
-                        <button id="addVerseBtn" style="display:none;"><i class="fas fa-plus-circle"></i> 본문에 추가</button>
+                    <div class="form-group">
+                        <label>비밀번호</label>
+                        <input type="password" id="login-password" required>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="sermonVerseText">성경 구절</label>
-                    <textarea id="sermonVerseText" rows="8" placeholder="검색하거나 직접 성경 구절을 입력하세요."></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="sermonMessage">메시지 / 설교 개요</label>
-                    <textarea id="sermonMessage" rows="10" placeholder="설교의 핵심 메시지나 개요를 작성하세요."></textarea>
-                </div>
-                <button onclick="generateSermon()" class="cta-button"><i class="fas fa-robot"></i> AI 설교 개요 생성</button>
-            </section>
+                    <button type="submit" class="btn btn-primary">로그인</button>
+                    <p class="auth-switch">계정이 없으신가요? <a href="#" id="show-signup">회원가입</a></p>
+                </form>
+            </div>
 
-            <section id="daily-verse">
-                <h2><i class="fas fa-bible"></i> 오늘의 말씀</h2>
-                <p>매일 새로운 말씀을 통해 영감을 얻으세요.</p>
-                <button id="getDailyVerseBtn" class="cta-button">새로운 말씀 받기</button>
-                <div id="dailyVerseResult" class="result-item" style="display: none; margin-top: 1.5rem;">
-                    <p id="dailyVerseText"></p>
-                </div>
-            </section>
-
-            <section id="meditation-helper">
-                <h2><i class="fas fa-pray"></i> 말씀 묵상 도우미</h2>
-                <p>선택한 구절을 깊이 묵상할 수 있도록 돕는 질문들입니다. (AI 기능)</p>
-                <div class="form-group">
-                    <label for="meditationVerse">묵상할 구절</label>
-                    <textarea id="meditationVerse" rows="4" placeholder="설교 노트의 본문 구절을 사용하거나, 직접 구절을 여기에 붙여넣으세요."></textarea>
-                </div>
-                <button onclick="generateMeditationQuestions()" class="cta-button">묵상 질문 생성하기</button>
-                <div id="meditationQuestions" class="results-container" style="margin-top: 1.5rem;"></div>
-            </section>
-
-            <section id="concordance">
-                <h2><i class="fas fa-search"></i> 성경 검색 (내부)</h2>
-                <div class="form-group">
-                    <label for="concordanceSearchInput">검색할 단어를 입력하세요</label>
-                    <div class="search-wrapper">
-                        <input type="text" id="concordanceSearchInput" placeholder="예: 사랑, 믿음, 천지">
-                        <button id="concordanceSearchBtn"><i class="fas fa-search"></i></button>
+            <!-- 회원가입 폼 -->
+            <div id="signup-form-container" class="auth-form" style="display:none;">
+                <h2>회원가입</h2>
+                <form id="signup-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>성명 *</label>
+                            <input type="text" id="signup-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>직분</label>
+                            <input type="text" id="signup-position" placeholder="예: 목사, 전도사, 장로">
+                        </div>
                     </div>
-                </div>
-                <div id="concordanceResults" class="results-container">
-                    <p>이곳에 검색 결과가 표시됩니다.</p>
-                </div>
-            </section>
-            
-            <section id="original-language-search">
-                <h2><i class="fas fa-language"></i> 원어 검색 (외부 링크)</h2>
-                <p>원어(히브리어, 헬라어) 성경 검색을 위해 신뢰도 높은 외부 사이트로 이동합니다. 새 탭에서 열립니다.</p>
-                <a href="https://biblehub.com/" target="_blank" class="cta-button"><i class="fas fa-external-link-alt"></i> Bible Hub 사이트 바로가기</a>
-            </section>
-
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>교회명</label>
+                            <input type="text" id="signup-church">
+                        </div>
+                        <div class="form-group">
+                            <label>소속교단</label>
+                            <input type="text" id="signup-denomination" placeholder="예: 예장통합, 예장합동">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>주소</label>
+                        <input type="text" id="signup-address">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>전화번호</label>
+                            <input type="tel" id="signup-phone" placeholder="010-1234-5678">
+                        </div>
+                        <div class="form-group">
+                            <label>이메일 *</label>
+                            <input type="email" id="signup-email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>비밀번호 * (최소 6자)</label>
+                        <input type="password" id="signup-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">회원가입</button>
+                    <p class="auth-switch">이미 계정이 있으신가요? <a href="#" id="show-login">로그인</a></p>
+                </form>
+            </div>
         </div>
-    </main>
+    </div>
 
-    <script src="bible_abbreviations.js"></script>
-    <script src="main.js"></script>
+    <!-- 메인 앱 화면 -->
+    <div id="app-container" style="display:none;">
+        <!-- 헤더 -->
+        <header>
+            <div class="container">
+                <div class="logo">
+                    <span class="logo-icon">🙏</span>
+                    <span class="logo-text">AI 성경 노트</span>
+                </div>
+                <div class="user-header">
+                    <span id="user-greeting">환영합니다!</span>
+                    <button id="logout-btn" class="btn-logout">로그아웃</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 네비게이션 -->
+        <nav class="nav-bar">
+            <button class="nav-btn active" data-page="home">홈</button>
+            <button class="nav-btn" data-page="daily">오늘의 말씀</button>
+            <button class="nav-btn" data-page="search">성구 검색</button>
+            <button class="nav-btn" data-page="praise">찬양</button>
+            <button class="nav-btn" data-page="notes">단어 사전</button>
+            <button class="nav-btn" data-page="original">원어 성경</button>
+            <button class="nav-btn" data-page="guide">성경 지도</button>
+            <button class="nav-btn" data-page="sermon">설교 작성</button>
+            <button class="nav-btn" data-page="my-sermons">내 설교</button>
+            <button class="nav-btn" data-page="board">설교 게시판</button>
+        </nav>
+
+        <!-- 메인 콘텐츠 -->
+        <main class="container">
+            <!-- 홈 페이지 -->
+            <div id="page-home" class="page active">
+                <div class="welcome-section">
+                    <h1>AI 성경 노트에 오신 것을 환영합니다</h1>
+                    <p class="subtitle">기술과 믿음의 만남, 더 깊은 성경 연구를 위한 도구</p>
+                </div>
+
+                <div class="quick-links">
+                    <div class="quick-link-card" data-navigate="daily">
+                        <div class="quick-link-icon">📖</div>
+                        <h3>오늘의 말씀</h3>
+                        <p>매일 새로운 성경 구절로 시작하세요</p>
+                    </div>
+                    <div class="quick-link-card" data-navigate="search">
+                        <div class="quick-link-icon">🔍</div>
+                        <h3>성구 검색</h3>
+                        <p>원하는 성경 구절을 빠르게 찾아보세요</p>
+                    </div>
+                    <div class="quick-link-card" data-navigate="praise">
+                        <div class="quick-link-icon">🎵</div>
+                        <h3>찬양</h3>
+                        <p>찬송가와 CCM을 검색하고 들어보세요</p>
+                    </div>
+                    <div class="quick-link-card" data-navigate="sermon">
+                        <div class="quick-link-icon">✍️</div>
+                        <h3>설교 작성</h3>
+                        <p>AI의 도움으로 설교문을 준비하세요</p>
+                    </div>
+                    <div class="quick-link-card" data-navigate="notes">
+                        <div class="quick-link-icon">📚</div>
+                        <h3>단어 사전</h3>
+                        <p>성경 용어의 의미를 깊이 있게 학습하세요</p>
+                    </div>
+                    <div class="quick-link-card" data-navigate="original">
+                        <div class="quick-link-icon">🔤</div>
+                        <h3>원어 성경</h3>
+                        <p>히브리어와 헬라어 원문을 탐구하세요</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 오늘의 말씀 페이지 -->
+            <div id="page-daily" class="page">
+                <h2>📖 오늘의 말씀</h2>
+                <div class="verse-of-day">
+                    <div id="daily-verse-content">
+                        <p class="loading-text">말씀을 불러오는 중...</p>
+                    </div>
+                    <button class="btn" onclick="loadDailyVerse()">새 말씀 보기</button>
+                </div>
+            </div>
+
+            <!-- 성구 검색 페이지 -->
+            <div id="page-search" class="page">
+                <h2>🔍 성구 검색</h2>
+                <div class="search-box">
+                    <div class="search-form">
+                        <div class="form-group">
+                            <label>성경 책</label>
+                            <select id="book-select"></select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>장</label>
+                                <input type="number" id="chapter-input" min="1" placeholder="1">
+                            </div>
+                            <div class="form-group">
+                                <label>절</label>
+                                <input type="number" id="verse-input" min="1" placeholder="1">
+                            </div>
+                        </div>
+                        <button class="btn" onclick="searchVerse()">검색</button>
+                    </div>
+                    <div class="search-form">
+                        <div class="form-group">
+                            <label>키워드 검색</label>
+                            <input type="text" id="keyword-input" placeholder="예: 사랑, 믿음, 소망">
+                        </div>
+                        <button class="btn" onclick="searchByKeyword()">검색</button>
+                    </div>
+                </div>
+                <div id="search-results" class="results-container"></div>
+            </div>
+
+            <!-- 찬양 페이지 -->
+            <div id="page-praise" class="page">
+                <h2>🎵 찬양</h2>
+                <div class="search-box">
+                    <div class="search-form">
+                        <div class="form-group">
+                            <label>찬송가 검색 (번호 또는 제목)</label>
+                            <input type="text" id="hymn-search-input" placeholder="예: 405, 주님의 십자가">
+                        </div>
+                        <button class="btn" onclick="searchHymn()">검색</button>
+                    </div>
+                </div>
+                
+                <div class="category-section">
+                    <h3>카테고리별 찬양</h3>
+                    <div class="category-tags">
+                        <span class="tag" onclick="searchHymnByCategory('예배')">예배</span>
+                        <span class="tag" onclick="searchHymnByCategory('찬양')">찬양</span>
+                        <span class="tag" onclick="searchHymnByCategory('감사')">감사</span>
+                        <span class="tag" onclick="searchHymnByCategory('기도')">기도</span>
+                        <span class="tag" onclick="searchHymnByCategory('위로')">위로</span>
+                    </div>
+                </div>
+
+                <div class="popular-hymns">
+                    <h3>인기 찬송가</h3>
+                    <div class="hymn-list" id="hymn-results"></div>
+                </div>
+            </div>
+
+            <!-- 단어 사전 페이지 -->
+            <div id="page-notes" class="page">
+                <h2>📚 단어 사전</h2>
+                <div class="search-box">
+                    <input type="text" id="word-search" placeholder="단어를 입력하세요 (예: 사랑, 은혜)">
+                    <button class="btn" onclick="searchWord()">검색</button>
+                </div>
+                <div class="common-words">
+                    <h3>자주 찾는 단어</h3>
+                    <div class="word-tags">
+                        <span class="tag" onclick="searchWordDirect('사랑')">사랑</span>
+                        <span class="tag" onclick="searchWordDirect('믿음')">믿음</span>
+                        <span class="tag" onclick="searchWordDirect('소망')">소망</span>
+                        <span class="tag" onclick="searchWordDirect('은혜')">은혜</span>
+                        <span class="tag" onclick="searchWordDirect('구원')">구원</span>
+                        <span class="tag" onclick="searchWordDirect('생명')">생명</span>
+                    </div>
+                </div>
+                <div id="word-results" class="results-container"></div>
+            </div>
+
+            <!-- 원어 성경 페이지 -->
+            <div id="page-original" class="page">
+                <h2>🔤 원어 성경</h2>
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchLanguage('hebrew')">히브리어 (구약)</button>
+                    <button class="tab-btn" onclick="switchLanguage('greek')">헬라어 (신약)</button>
+                </div>
+                <div class="search-box">
+                    <input type="text" id="original-word-search" placeholder="원어 단어 입력">
+                    <button class="btn" onclick="searchOriginalWord()">검색</button>
+                </div>
+                <div id="original-results" class="original-text-section"></div>
+            </div>
+
+            <!-- 성경 지도 페이지 -->
+            <div id="page-guide" class="page">
+                <h2>🗺️ 성경 지도</h2>
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="showTestament('old')">구약</button>
+                    <button class="tab-btn" onclick="showTestament('new')">신약</button>
+                </div>
+                <div id="testament-old" class="guide-categories">
+                    <h3>구약 성경</h3>
+                    <div class="category-grid" id="old-testament-books"></div>
+                </div>
+                <div id="testament-new" class="guide-categories" style="display:none;">
+                    <h3>신약 성경</h3>
+                    <div class="category-grid" id="new-testament-books"></div>
+                </div>
+            </div>
+
+            <!-- 설교 작성 페이지 -->
+            <div id="page-sermon" class="page">
+                <h2>✍️ 설교 작성</h2>
+                
+                <!-- 단계별 네비게이션 -->
+                <div class="sermon-steps" id="sermon-nav" style="display:none;">
+                    <button class="btn-step" onclick="goToSermonFirstStep()">처음으로</button>
+                    <button class="btn-step" onclick="goToSermonPreviousStep()">이전 단계</button>
+                    <span id="current-step-text"></span>
+                </div>
+
+                <!-- 1단계: 주제/성구 입력 -->
+                <div id="sermon-step-1" class="sermon-step active">
+                    <div class="form-group">
+                        <label>설교 주제 또는 성경 구절</label>
+                        <input type="text" id="sermon-topic-input" placeholder="예: 사랑, 요한복음 3:16">
+                    </div>
+                    <button class="btn btn-primary" onclick="generateSermonTitles()">제목 추천 받기</button>
+                </div>
+
+                <!-- 2단계: 제목 선택 -->
+                <div id="sermon-step-2" class="sermon-step">
+                    <h3>추천 제목 (3가지)</h3>
+                    <div id="title-options" class="title-options"></div>
+                </div>
+
+                <!-- 3단계: 설교 시간 선택 -->
+                <div id="sermon-step-3" class="sermon-step">
+                    <h3>설교 시간 선택</h3>
+                    <div class="time-options">
+                        <button class="time-btn" onclick="selectSermonTime(5)">5분</button>
+                        <button class="time-btn" onclick="selectSermonTime(10)">10분</button>
+                        <button class="time-btn" onclick="selectSermonTime(30)">30분</button>
+                    </div>
+                </div>
+
+                <!-- 4단계: 3대지 자동 생성 -->
+                <div id="sermon-step-4" class="sermon-step">
+                    <h3>설교 개요 (3대지)</h3>
+                    <div id="sermon-outline-display" class="outline-display"></div>
+                    <button class="btn" onclick="regenerateOutline()">다시 생성</button>
+                    <button class="btn btn-primary" onclick="proceedToStep5()">다음 단계</button>
+                </div>
+
+                <!-- 5단계: 찬송가 추천 -->
+                <div id="sermon-step-5" class="sermon-step">
+                    <h3>추천 찬송가</h3>
+                    <div id="recommended-hymns" class="hymn-recommendations"></div>
+                    <button class="btn btn-primary" onclick="proceedToFinalEdit()">설교 작성하기</button>
+                </div>
+
+                <!-- 최종 편집 -->
+                <div id="sermon-final-edit" class="sermon-step">
+                    <div class="sermon-editor">
+                        <div class="form-group">
+                            <label>설교 제목</label>
+                            <input type="text" id="sermon-title" placeholder="설교 제목">
+                        </div>
+                        <div class="form-group">
+                            <label>본문 말씀</label>
+                            <input type="text" id="sermon-scripture" placeholder="예: 요한복음 3:16">
+                        </div>
+                        <div class="form-group">
+                            <label>설교 개요</label>
+                            <textarea id="sermon-outline" rows="8" placeholder="서론, 본론, 결론"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>설교 내용</label>
+                            <textarea id="sermon-content" rows="12" placeholder="설교 전체 내용"></textarea>
+                        </div>
+                        <div class="sermon-actions">
+                            <button class="btn btn-primary" onclick="saveSermon()">저장</button>
+                            <button class="btn" onclick="printSermon()">🖨️ 인쇄</button>
+                            <button class="btn" onclick="downloadSermonTXT()">💾 TXT 다운로드</button>
+                            <button class="btn" onclick="downloadSermonJSON()">💾 JSON 다운로드</button>
+                            <button class="btn" onclick="clearSermon()">초기화</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 내 설교 페이지 -->
+            <div id="page-my-sermons" class="page">
+                <h2>📝 내 설교</h2>
+                <div id="my-sermons-list" class="sermon-list"></div>
+            </div>
+
+            <!-- 설교 게시판 페이지 -->
+            <div id="page-board" class="page">
+                <h2>📢 설교 게시판</h2>
+                <div class="board-header">
+                    <button class="btn btn-primary" onclick="showBoardPostForm()" id="create-post-btn">글쓰기</button>
+                    <div class="board-filter">
+                        <select id="board-category-filter" onchange="filterBoardPosts()">
+                            <option value="all">전체</option>
+                            <option value="주일설교">주일설교</option>
+                            <option value="수요설교">수요설교</option>
+                            <option value="새벽설교">새벽설교</option>
+                            <option value="기타">기타</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 글쓰기 폼 -->
+                <div id="board-post-form" class="board-form" style="display:none;">
+                    <div class="form-group">
+                        <label>카테고리</label>
+                        <select id="post-category">
+                            <option>주일설교</option>
+                            <option>수요설교</option>
+                            <option>새벽설교</option>
+                            <option>기타</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>제목</label>
+                        <input type="text" id="post-title">
+                    </div>
+                    <div class="form-group">
+                        <label>본문 말씀</label>
+                        <input type="text" id="post-scripture">
+                    </div>
+                    <div class="form-group">
+                        <label>내용</label>
+                        <textarea id="post-content" rows="10"></textarea>
+                    </div>
+                    <div class="board-actions">
+                        <button class="btn btn-primary" onclick="submitBoardPost()">등록</button>
+                        <button class="btn" onclick="cancelBoardPost()">취소</button>
+                    </div>
+                </div>
+
+                <!-- 게시글 목록 -->
+                <div id="board-posts-list" class="board-list"></div>
+            </div>
+        </main>
+
+        <!-- 음성 명령 버튼 -->
+        <button id="voice-btn" class="voice-btn" onclick="startVoiceCommand()" title="음성 명령">
+            🎤
+        </button>
+
+        <footer>
+            <p>&copy; 2026 AI 성경 노트. 모든 권리 보유.</p>
+        </footer>
+    </div>
+
+    <script src="bible-data.js"></script>
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
