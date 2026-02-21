@@ -52,6 +52,10 @@ document.getElementById('login-form')?.addEventListener('submit', (e) => {
     const user = users.find(u => u.email === email && u.password === password);
     
     if (user) {
+        if (user.isBanned) {
+            alert('귀하의 계정은 관리자에 의해 이용이 제한되었습니다. 접속할 수 없습니다.');
+            return;
+        }
         window.currentUser = user;
         localStorage.setItem('currentUser', JSON.stringify(user));
         showMainApp();
@@ -74,9 +78,14 @@ document.getElementById('signup-form')?.addEventListener('submit', (e) => {
     const password = document.getElementById('signup-password').value;
     
     const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const existingUser = users.find(u => u.email === email);
     
-    if (users.find(u => u.email === email)) {
-        alert('이미 등록된 이메일입니다.');
+    if (existingUser) {
+        if (existingUser.isBanned) {
+            alert('이 이메일은 이용이 제한되어 다시 가입할 수 없습니다.');
+        } else {
+            alert('이미 등록된 이메일입니다.');
+        }
         return;
     }
     
