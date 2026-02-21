@@ -43,12 +43,19 @@ body {
 
 /* ===== 인증 페이지 ===== */
 .auth-container {
-    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--gradient-primary);
+    background: rgba(107, 70, 193, 0.2); /* 배경이 살짝 보이도록 반투명 처리 */
+    backdrop-filter: blur(8px); /* 배경을 흐릿하게 하여 집중도 향상 */
     padding: 20px;
+    transition: var(--transition);
 }
 
 .auth-card {
@@ -359,8 +366,26 @@ h3 {
     box-shadow: var(--shadow-md);
 }
 
-.btn-primary {
-    background: var(--gradient-secondary);
+.auth-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.auth-buttons .btn {
+    flex: 1;
+    white-space: nowrap;
+}
+
+.btn-guest {
+    background: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color) !important;
+}
+
+.btn-guest:hover {
+    background: var(--bg-color);
+    color: var(--primary-color);
 }
 
 /* ===== 검색 결과 ===== */

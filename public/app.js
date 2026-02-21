@@ -103,12 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // 로그아웃 버튼
-    const logoutBtn = document.getElementById('logout-btn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', logout);
-    }
-    
     // 로그인 상태 확인
     checkAuthStatus();
 
@@ -631,7 +625,9 @@ function proceedToFinalEdit() {
 function saveSermon() {
     const currentUser = getCurrentUser();
     if (!currentUser) {
-        alert('로그인이 필요합니다.');
+        alert('로그인이 필요한 기능입니다.');
+        const authPage = document.getElementById('auth-page');
+        if (authPage) authPage.style.display = 'flex';
         return;
     }
     
@@ -800,12 +796,18 @@ function clearSermon() {
 // ===== 내 설교 관리 =====
 function loadMySermons() {
     const currentUser = getCurrentUser();
-    if (!currentUser) return;
-    
-    const allSermons = JSON.parse(localStorage.getItem('sermons') || '[]');
-    const mySermons = allSermons.filter(s => s.userId === currentUser.email);
-    
     const container = document.getElementById('my-sermons-list');
+    
+    if (!currentUser) {
+        if (container) {
+            container.innerHTML = `
+                <div class="loading-text">
+                    <p>로그인하시면 작성하신 설교를 저장하고 관리하실 수 있습니다.</p>
+                    <button class="btn btn-sm" style="margin-top:10px" onclick="document.getElementById('auth-page').style.display='flex'">로그인하기</button>
+                </div>`;
+        }
+        return;
+    }
     
     if (mySermons.length === 0) {
         container.innerHTML = '<p class="loading-text">저장된 설교가 없습니다.</p>';
@@ -954,7 +956,9 @@ function filterBoardPosts() {
 function showBoardPostForm() {
     const currentUser = getCurrentUser();
     if (!currentUser) {
-        alert('로그인이 필요합니다.');
+        alert('로그인이 필요한 기능입니다.');
+        const authPage = document.getElementById('auth-page');
+        if (authPage) authPage.style.display = 'flex';
         return;
     }
     
