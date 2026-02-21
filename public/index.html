@@ -353,6 +353,18 @@
                             <label>설교 내용</label>
                             <textarea id="sermon-content" rows="12" placeholder="설교 전체 내용"></textarea>
                         </div>
+
+                        <!-- 복구된 성경 구절 검색 섹션 -->
+                        <div class="search-box" style="margin-top: 20px; border: 1px solid var(--border-color);">
+                            <h4 style="color: var(--primary-color);">📖 빠른 성경 찾기 및 추가</h4>
+                            <div class="search-form" style="display: flex; gap: 10px; margin-top: 10px;">
+                                <input type="text" id="sermon-verse-search" placeholder="예: 창 1:1" style="flex: 1;">
+                                <button class="btn btn-sm" onclick="searchVerseForSermon()">검색</button>
+                            </div>
+                            <div id="sermon-verse-result" style="margin-top: 10px; font-size: 0.9rem; color: var(--text-secondary);"></div>
+                            <button id="add-verse-to-sermon" class="btn btn-sm" style="display: none; margin-top: 10px; width: 100%; background: var(--secondary-color);" onclick="addVerseToSermonContent()">본문에 말씀 추가하기</button>
+                        </div>
+
                         <div class="sermon-actions">
                             <button class="btn btn-primary" onclick="saveSermon()">저장</button>
                             <button class="btn" onclick="printSermon()">🖨️ 인쇄</button>
