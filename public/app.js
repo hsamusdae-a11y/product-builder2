@@ -1023,10 +1023,26 @@ function displayBoardPosts(posts) {
             <div class="board-item-actions">
                 <button class="btn btn-sm" onclick="viewBoardPost(${post.id})">보기</button>
                 <button class="btn btn-sm" onclick="recommendPost(${post.id})">👍 추천</button>
-                ${canDeletePost(post) ? `<button class="btn btn-sm" onclick="deletePost(${post.id})">삭제</button>` : ''}
+                ${canEditPost(post) ? `<button class="btn btn-sm" onclick="editBoardPost(${post.id})">수정</button>` : ''}
+                ${canAdminDeletePost(post) ? `<button class="btn btn-sm" style="background: var(--accent-color);" onclick="deletePost(${post.id})">삭제</button>` : ''}
             </div>
         </div>
     `).join('');
+}
+
+// 수정 권한 확인 (본인만 가능)
+function canEditPost(post) {
+    const currentUser = getAppCurrentUser();
+    if (!currentUser) return false;
+    return post.userId === currentUser.email;
+}
+
+// 삭제 권한 확인 (관리자만 가능)
+function canAdminDeletePost(post) {
+    const currentUser = getAppCurrentUser();
+    if (!currentUser) return false;
+    if (typeof isAdmin === 'function' && isAdmin(currentUser)) return true;
+    return false; // 일반 사용자는 본인 글이라도 삭제는 관리자에게 요청 (또는 원하시면 본인 삭제 허용 가능)
 }
 
 function filterBoardPosts() {
@@ -1058,11 +1074,23 @@ function showBoardPostForm() {
     document.getElementById('board-post-form').style.display = 'block';
 }
 
-function cancelBoardPost() {
-    document.getElementById('board-post-form').style.display = 'none';
-    document.getElementById('post-title').value = '';
-    document.getElementById('post-scripture').value = '';
-    document.getElementById('post-content').value = '';
+function editBoardPost(id) {
+    const posts = JSON.parse(localStorage.getItem('boardPosts') || '[]');
+    const post = posts.find(p => p.id === id);
+    if (!post) return;
+
+    // 폼에 기존 데이터 채우기
+    document.getElementById('post-category').value = post.category;
+    document.getElementById('post-title').value = post.title;
+    document.getElementById('post-scripture').value = post.scripture;
+    document.getElementById('post-content').value = post.content;
+    
+    editingPostId = id; // 수정 중인 ID 저장
+    
+    // 폼 보이기
+    document.getElementById('board-post-form').style.display = 'block';
+    document.getElementById('create-post-btn').textContent = '수정 취소';
+    window.scrollTo(0, document.getElementById('board-post-form').offsetTop - 100);
 }
 
 function submitBoardPost() {
@@ -1079,25 +1107,47 @@ function submitBoardPost() {
         return;
     }
     
-    const post = {
-        id: Date.now(),
-        userId: currentUser.email,
-        author: currentUser.name,
-        category,
-        title,
-        scripture,
-        content,
-        date: new Date().toLocaleString('ko-KR'),
-        recommendations: 0
-    };
+    let posts = JSON.parse(localStorage.getItem('boardPosts') || '[]');
+
+    if (editingPostId) {
+        // 기존 글 수정
+        posts = posts.map(p => {
+            if (p.id === editingPostId) {
+                return { ...p, category, title, scripture, content, lastModified: new Date().toLocaleString('ko-KR') };
+            }
+            return p;
+        });
+        alert('게시글이 수정되었습니다!');
+        editingPostId = null;
+    } else {
+        // 새 글 등록
+        const post = {
+            id: Date.now(),
+            userId: currentUser.email,
+            author: currentUser.name,
+            category,
+            title,
+            scripture,
+            content,
+            date: new Date().toLocaleString('ko-KR'),
+            recommendations: 0
+        };
+        posts.unshift(post);
+        alert('게시글이 등록되었습니다!');
+    }
     
-    const posts = JSON.parse(localStorage.getItem('boardPosts') || '[]');
-    posts.unshift(post);
     localStorage.setItem('boardPosts', JSON.stringify(posts));
-    
     cancelBoardPost();
     loadBoardPosts();
-    alert('게시글이 등록되었습니다!');
+}
+
+function cancelBoardPost() {
+    document.getElementById('board-post-form').style.display = 'none';
+    document.getElementById('post-title').value = '';
+    document.getElementById('post-scripture').value = '';
+    document.getElementById('post-content').value = '';
+    document.getElementById('create-post-btn').textContent = '글쓰기';
+    editingPostId = null;
 }
 
 function viewBoardPost(id) {
@@ -1128,12 +1178,6 @@ function deletePost(id) {
     posts = posts.filter(p => p.id !== id);
     localStorage.setItem('boardPosts', JSON.stringify(posts));
     loadBoardPosts();
-}
-
-function canDeletePost(post) {
-    const currentUser = getAppCurrentUser();
-    if (!currentUser) return false;
-    return post.userId === currentUser.email || currentUser.level >= 3;
 }
 
 // ===== 음성 명령 =====
