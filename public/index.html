@@ -3,159 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 성경 노트 - 안정화 버전</title>
+    <title>AI 성경 연구 노트</title>
     <style>
-        /* [핵심 스타일] 외부 CSS 없이도 깔끔하게 보이도록 인라인 정의 */
         :root {
             --primary: #6B46C1;
+            --primary-light: #F3E8FF;
             --bg: #F5F7FA;
             --card: #FFFFFF;
             --text: #2C3E50;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+        
+        /* 메인 레이아웃 */
+        #app-container { display: none; } /* 로그인 전에는 숨김 */
+        
         .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
         
-        header { background: var(--card); padding: 20px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        nav { display: flex; gap: 10px; justify-content: center; padding: 15px; background: white; sticky; top: 0; z-index: 100; border-bottom: 1px solid #ddd; }
+        header { background: var(--card); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow); }
+        .user-info { font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
         
-        .nav-btn { padding: 10px 15px; border: 1px solid #ddd; background: white; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        nav { 
+            display: flex; 
+            gap: 10px; 
+            justify-content: center; 
+            padding: 15px; 
+            background: white; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            border-bottom: 1px solid #ddd;
+            overflow-x: auto;
+        }
+        
+        .nav-btn { padding: 10px 15px; border: 1px solid #ddd; background: white; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; white-space: nowrap; }
         .nav-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .nav-btn:hover:not(.active) { background: var(--primary-light); }
         
         .page { display: none; padding: 30px 0; }
         .page.active { display: block !important; }
         
-        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .btn { padding: 12px 25px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; }
+        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: var(--shadow); margin-bottom: 20px; }
+        .btn { padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .btn-outline { background: white; color: var(--primary); border: 1px solid var(--primary); }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; font-size: 1rem; }
         
-        /* 로그인 레이어 - 메뉴 방해 금지 */
-        #auth-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10000; align-items: center; justify-content: center; }
-        #auth-page.active { display: flex; }
+        /* 로그인 모달 */
+        #auth-page { 
+            display: flex; /* 초기값 flex (로그인 안된 경우) */
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.6); z-index: 10000; 
+            align-items: center; justify-content: center; 
+            backdrop-filter: blur(4px);
+        }
+        .auth-container { background: white; width: 90%; max-width: 450px; padding: 40px; border-radius: 20px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        .auth-header { text-align: center; margin-bottom: 30px; }
+        .auth-switch { text-align: center; margin-top: 20px; font-size: 0.9rem; }
+        .auth-switch a { color: var(--primary); text-decoration: none; font-weight: bold; }
+
+        .loading-text { color: #888; font-style: italic; }
     </style>
 </head>
 <body>
 
-    <!-- [1] 헤더 및 네비게이션 -->
-    <header>
-        <h1>🙏 AI 성경 노트</h1>
-    </header>
+    <!-- [메인 앱 컨테이너] -->
+    <div id="app-container">
+        <header>
+            <h1>🙏 AI 성경 연구</h1>
+            <div class="user-info">
+                <span id="user-greeting">반갑습니다</span>
+                <button id="logout-btn" class="btn btn-outline" style="padding: 5px 12px; font-size: 0.8rem;">로그아웃</button>
+            </div>
+        </header>
 
-    <nav id="main-nav">
-        <button class="nav-btn active" onclick="navigateTo('home')">홈</button>
-        <button class="nav-btn" onclick="navigateTo('daily')">오늘의 말씀</button>
-        <button class="nav-btn" onclick="navigateTo('search')">성구 검색</button>
-        <button class="nav-btn" onclick="navigateTo('notes')">용어사전</button>
-        <button class="nav-btn" onclick="navigateTo('sermon')">설교 작성</button>
-    </nav>
+        <nav id="main-nav">
+            <button class="nav-btn active" onclick="navigateTo('home')">홈</button>
+            <button class="nav-btn" onclick="navigateTo('daily')">오늘의 말씀</button>
+            <button class="nav-btn" onclick="navigateTo('search')">성구 검색</button>
+            <button class="nav-btn" onclick="navigateTo('notes')">용어사전</button>
+            <button class="nav-btn" onclick="navigateTo('sermon')">설교 작성</button>
+            <!-- 관리자용 버튼 (auth.js에서 제어) -->
+            <button class="nav-btn" data-page="admin" style="display:none; color: red;" onclick="alert('관리자 페이지 준비 중')">관리자</button>
+        </nav>
 
-    <!-- [2] 메인 콘텐츠 영역 -->
-    <main class="container">
-        
-        <!-- 홈 페이지 -->
-        <div id="page-home" class="page active">
-            <div class="card" style="text-align: center;">
-                <h2>반갑습니다!</h2>
-                <p>원하시는 메뉴를 클릭하여 성경 연구를 시작해 보세요.</p>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px;">
-                    <div class="card" style="cursor: pointer;" onclick="navigateTo('daily')">📖 오늘의 말씀</div>
-                    <div class="card" style="cursor: pointer;" onclick="navigateTo('notes')">📚 용어사전</div>
+        <main class="container">
+            <!-- 홈 -->
+            <div id="page-home" class="page active">
+                <div class="card" style="text-align: center;">
+                    <h2>반갑습니다!</h2>
+                    <p>성경 연구와 설교 준비를 위한 AI 도우미입니다.</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px;">
+                        <div class="card" style="cursor: pointer; margin-bottom: 0;" onclick="navigateTo('daily')">📖 오늘의 말씀</div>
+                        <div class="card" style="cursor: pointer; margin-bottom: 0;" onclick="navigateTo('notes')">📚 용어사전</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 오늘의 말씀 -->
+            <div id="page-daily" class="page">
+                <div class="card" style="text-align: center;" id="daily-verse-content">
+                    <h2>📖 오늘의 말씀</h2>
+                    <p class="loading-text">말씀을 불러오는 중...</p>
+                </div>
+            </div>
+
+            <!-- 성구 검색 -->
+            <div id="page-search" class="page">
+                <div class="card">
+                    <h2>🔍 성구 검색</h2>
+                    <input type="text" id="bible-search-input" placeholder="성경 구절이나 키워드 (예: 창세기 1:1)">
+                    <button class="btn" onclick="searchByKeyword()">검색</button>
+                    <div id="search-results" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+
+            <!-- 용어사전 -->
+            <div id="page-notes" class="page">
+                <div class="card">
+                    <h2>📚 용어사전</h2>
+                    <p style="margin-bottom: 15px;">단어를 입력하면 전문 자료를 연결해 드립니다.</p>
+                    <input type="text" id="word-search" placeholder="예: 은혜, 믿음">
+                    <button class="btn" onclick="searchWord()">검색하기</button>
+                    <div id="word-results" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+
+            <!-- 설교 작성 -->
+            <div id="page-sermon" class="page">
+                <div class="card">
+                    <h2>✍️ 설교 작성</h2>
+                    <input type="text" id="sermon-topic" placeholder="설교 주제를 입력하세요">
+                    <button class="btn" onclick="generateSermonTitles()">설교 작성 시작</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- [로그인 모달 영역] -->
+    <div id="auth-page">
+        <div class="auth-container">
+            <div id="login-form-container">
+                <div class="auth-header">
+                    <h2>로그인</h2>
+                    <p>AI 성경 연구 노트를 시작합니다.</p>
+                </div>
+                <form id="login-form">
+                    <input type="email" id="login-email" placeholder="이메일" required>
+                    <input type="password" id="login-password" placeholder="비밀번호" required>
+                    <button type="submit" class="btn" style="width: 100%;">로그인</button>
+                </form>
+                <div class="auth-switch">
+                    계정이 없으신가요? <a href="#" id="show-signup">회원가입</a>
+                </div>
+                <button class="btn btn-outline" style="width: 100%; margin-top: 15px; border:none; color:#999;" onclick="document.getElementById('auth-page').style.display='none'; document.getElementById('app-container').style.display='block';">로그인 없이 구경하기</button>
+            </div>
+
+            <div id="signup-form-container" style="display: none;">
+                <div class="auth-header">
+                    <h2>회원가입</h2>
+                    <p>정보를 입력하여 가입하세요.</p>
+                </div>
+                <form id="signup-form">
+                    <input type="text" id="signup-name" placeholder="이름" required>
+                    <select id="signup-position">
+                        <option value="성도">성도</option>
+                        <option value="집사">집사</option>
+                        <option value="장로">장로</option>
+                        <option value="전도사">전도사</option>
+                        <option value="목사">목사</option>
+                    </select>
+                    <input type="text" id="signup-church" placeholder="섬기는 교회">
+                    <input type="email" id="signup-email" placeholder="이메일" required>
+                    <input type="password" id="signup-password" placeholder="비밀번호" required>
+                    <button type="submit" class="btn" style="width: 100%;">가입하기</button>
+                </form>
+                <div class="auth-switch">
+                    이미 계정이 있나요? <a href="#" id="show-login">로그인</a>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- 오늘의 말씀 -->
-        <div id="page-daily" class="page">
-            <div class="card" style="text-align: center;">
-                <h2>📖 오늘의 말씀</h2>
-                <p style="font-size: 1.3rem; margin: 20px 0;">"여호와는 나의 목자시니 내게 부족함이 없으리로다" (시편 23:1)</p>
-            </div>
-        </div>
-
-        <!-- 성구 검색 -->
-        <div id="page-search" class="page">
-            <div class="card">
-                <h2>🔍 성구 검색</h2>
-                <input type="text" placeholder="성경 구절이나 키워드를 입력하세요">
-                <button class="btn" onclick="alert('데이터를 연결 중입니다.')">검색</button>
-            </div>
-        </div>
-
-        <!-- 용어사전 (성서공회 팝업 연동) -->
-        <div id="page-notes" class="page">
-            <div class="card">
-                <h2>📚 용어사전</h2>
-                <p style="margin-bottom: 15px;">검색어를 입력하면 대한성서공회의 전문 자료를 찾아드립니다.</p>
-                <input type="text" id="term-search-input" placeholder="예: 은혜, 사랑, 믿음">
-                <button class="btn" onclick="searchTerm()">검색하기</button>
-                <div id="term-results" style="margin-top: 20px;"></div>
-            </div>
-        </div>
-
-        <!-- 설교 작성 -->
-        <div id="page-sermon" class="page">
-            <div class="card">
-                <h2>✍️ 설교 작성</h2>
-                <input type="text" placeholder="설교 주제를 입력하세요">
-                <button class="btn" onclick="alert('설교 자동 생성 기능을 복구 중입니다.')">설교 작성 시작</button>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- [3] 자바스크립트 통합 (충돌 방지) -->
-    <script>
-        // 페이지 전환 함수
-        function navigateTo(pageName) {
-            console.log('Navigating to:', pageName);
-            
-            // 모든 페이지 숨기기
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(p => p.classList.remove('active'));
-            
-            // 대상 페이지 표시
-            const target = document.getElementById('page-' + pageName);
-            if (target) {
-                target.classList.add('active');
-                
-                // 버튼 강조
-                const btns = document.querySelectorAll('.nav-btn');
-                btns.forEach(btn => {
-                    btn.classList.remove('active');
-                    if (btn.getAttribute('onclick').includes(pageName)) {
-                        btn.classList.add('active');
-                    }
-                });
-            }
-            window.scrollTo(0, 0);
-        }
-
-        // 용어사전 검색 함수 (안전한 팝업)
-        function searchTerm() {
-            const word = document.getElementById('term-search-input').value.trim();
-            if (!word) return alert('검색어를 입력하세요.');
-            
-            const results = document.getElementById('term-results');
-            const encoded = encodeURIComponent(word);
-            
-            results.innerHTML = `
-                <div style="background: #f0f0f0; padding: 20px; border-radius: 10px; border-left: 5px solid var(--primary);">
-                    <h4>'${word}' 검색 결과</h4>
-                    <p style="margin: 10px 0;">브라우저 확장 프로그램과의 충돌을 피하기 위해 안전한 창으로 연결합니다.</p>
-                    <button class="btn" style="width: 100%;" 
-                        onclick="window.open('https://www.bskorea.or.kr/prog/popup_term.php?s_word=${encoded}', 'KbsPop', 'width=750,height=850,scrollbars=yes')">
-                        📖 대한성서공회 전문 용어설명 보기
-                    </button>
-                </div>
-            `;
-        }
-
-        // 초기 로드 시 실행
-        window.onload = function() {
-            console.log('Safe mode loaded.');
-            // 모든 방해 요소 제거 후 홈 표시
-            navigateTo('home');
-        };
-    </script>
+    <script src="bible-data.js"></script>
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
