@@ -1,0 +1,239 @@
+/* --- General Setup --- */
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap');
+
+:root {
+    --primary-bg: #1a1a1a;
+    --secondary-bg: #2c2c2c;
+    --text-color: #f0f0f0;
+    --accent-color: #00ffff; /* Neon Blue */
+    --accent-glow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 15px #00ffff;
+    --border-color: #444;
+    --highlight-bg: rgba(0, 255, 255, 0.2);
+    --danger-color: #ff4d4d;
+    --font-family: 'Nanum Gothic', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--primary-bg);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* --- Header & Navigation --- */
+header {
+    background-color: var(--secondary-bg);
+    padding: 1rem 2rem;
+    border-bottom: 2px solid var(--border-color);
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+header h1 {
+    font-size: 2rem;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+header h1 i {
+    color: var(--accent-color);
+    text-shadow: var(--accent-glow);
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+nav a:hover {
+    background-color: var(--border-color);
+    color: var(--accent-color);
+}
+
+nav a.active-nav {
+    color: var(--accent-color);
+    font-weight: 700;
+    text-shadow: var(--accent-glow);
+    border-bottom: 2px solid var(--accent-color);
+}
+
+nav a i {
+    margin-right: 8px;
+}
+
+/* --- Main Content & Sections --- */
+main {
+    padding: 2rem;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+section {
+    display: none;
+    background-color: var(--secondary-bg);
+    padding: 2rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+section.active {
+    display: block;
+}
+
+section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent-color);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+section h2 i {
+    margin-right: 10px;
+}
+
+/* --- Forms & Buttons --- */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: var(--primary-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 5px;
+    font-family: var(--font-family);
+    font-size: 1rem;
+}
+
+input[type="text"]:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+}
+
+.cta-button, button {
+    background-color: var(--accent-color);
+    color: var(--primary-bg);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.cta-button i, button i {
+    margin-right: 8px;
+}
+
+.cta-button:hover, button:hover {
+    background-color: #fff;
+    box-shadow: var(--accent-glow);
+}
+
+.search-wrapper {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.search-wrapper button {
+    flex-shrink: 0;
+}
+
+
+/* --- Results & Dynamic Content --- */
+.results-container, #verseSearchResult {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: var(--primary-bg);
+    border-radius: 5px;
+}
+
+.result-item {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+.result-item:last-child {
+    border-bottom: none;
+}
+
+.result-item p {
+    margin-bottom: 0.5rem;
+}
+
+.highlight {
+    background-color: var(--highlight-bg);
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+#addVerseBtn, .add-to-sermon-btn {
+    background-color: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    margin-left: 10px;
+    padding: 0.3rem 0.8rem;
+}
+
+#addVerseBtn:hover, .add-to-sermon-btn:hover {
+    background-color: var(--highlight-bg);
+}
+
+.fa-spinner {
+    color: var(--accent-color);
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    header {
+        padding: 1rem;
+    }
+
+    main {
+        padding: 1rem;
+    }
+
+    section {
+        padding: 1.5rem;
+    }
+}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 설교 노트</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-feather-alt"></i> AI 설교 노트</h1>
+        <nav>
+            <ul>
+                <li><a href="#" onclick="showSection('intro', this)" class="nav-link active-nav"><i class="fas fa-home"></i> 시작</a></li>
+                <li><a href="#" onclick="showSection('daily-verse', this)" class="nav-link"><i class="fas fa-bible"></i> 오늘의 말씀</a></li>
+                <li><a href="#" onclick="showSection('concordance', this)" class="nav-link"><i class="fas fa-search"></i> 성구 사전</a></li>
+                <li><a href="#" onclick="showSection('dictionary', this)" class="nav-link"><i class="fas fa-book"></i> 단어 사전</a></li>
+                <li><a href="#" onclick="showSection('original-language-search', this)" class="nav-link"><i class="fas fa-language"></i> 원어 성경</a></li>
+                <li><a href="https://www.bskorea.or.kr/bible/map/map_list.do" target="_blank" class="nav-link"><i class="fas fa-map-marked-alt"></i> 성경 지도</a></li>
+                <li><a href="#" onclick="showSection('sermon-notes', this)" class="nav-link"><i class="fas fa-pencil-alt"></i> 설교 작성</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <section id="intro" class="active">
+                <h2><i class="fas fa-info-circle"></i> 시작하기</h2>
+                <div id="introContent">
+                    <p>말씀 스터디 허브에 오신 것을 환영합니다. 이곳은 성경 연구와 설교 준비를 위한 통합 플랫폼입니다. (성경 버전: 개역개정)</p>
+                    <p>상단의 메뉴를 클릭하여 다양한 기능을 활용해 보세요.</p>
+                </div>
+                <button id="editIntroBtn" class="cta-button" style="margin-top: 1rem;"><i class="fas fa-edit"></i> 내용 수정</button>
+            </section>
+
+            <section id="sermon-notes">
+                <h2><i class="fas fa-file-alt"></i> 설교 노트 작성</h2>
+                <div class="form-group">
+                    <label for="sermonTitle">설교 제목</label>
+                    <input type="text" id="sermonTitle" placeholder="설교의 제목을 입력하세요">
+                </div>
+                <div class="form-group">
+                    <label for="verseSearchInput">성경 구절 검색 (예: 창1:1)</label>
+                    <div class="search-wrapper">
+                        <input type="text" id="verseSearchInput" placeholder="빠른 구절 검색">
+                        <button id="verseSearchBtn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div id="verseSearchResult" style="display:none;">
+                        <p id="verseResultText"></p>
+                        <button id="addVerseBtn" style="display:none;"><i class="fas fa-plus-circle"></i> 본문에 추가</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="sermonVerseText">성경 구절</label>
+                    <textarea id="sermonVerseText" rows="8" placeholder="검색하거나 직접 성경 구절을 입력하세요."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="sermonMessage">메시지 / 설교 개요</label>
+                    <textarea id="sermonMessage" rows="10" placeholder="설교의 핵심 메시지나 개요를 작성하세요."></textarea>
+                </div>
+                <button onclick="generateSermon()" class="cta-button"><i class="fas fa-robot"></i> AI 설교 개요 생성</button>
+            </section>
+
+            <section id="daily-verse">
+                <h2><i class="fas fa-bible"></i> 오늘의 말씀</h2>
+                <p>매일 새로운 말씀을 통해 영감을 얻으세요.</p>
+                <button id="getDailyVerseBtn" class="cta-button">새로운 말씀 받기</button>
+                <div id="dailyVerseResult" class="result-item" style="display: none; margin-top: 1.5rem;">
+                    <p id="dailyVerseText"></p>
+                </div>
+            </section>
+
+            <section id="concordance">
+                <h2><i class="fas fa-search"></i> 성구 사전</h2>
+                <div class="form-group">
+                    <label for="concordanceSearchInput">검색할 단어를 입력하세요</label>
+                    <div class="search-wrapper">
+                        <input type="text" id="concordanceSearchInput" placeholder="예: 사랑, 믿음, 천지">
+                        <button id="concordanceSearchBtn"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                <div id="concordanceResults" class="results-container">
+                    <p>이곳에 검색 결과가 표시됩니다.</p>
+                </div>
+            </section>
+            
+            <section id="dictionary">
+                <h2><i class="fas fa-book"></i> 단어 사전</h2>
+                <p>성경 단어 또는 일반 단어의 의미를 찾아볼 수 있습니다. 아래 링크를 통해 국립국어원 표준국어대사전을 이용해 보세요. 새 탭에서 열립니다.</p>
+                <a href="https://stdict.korean.go.kr/" target="_blank" class="cta-button"><i class="fas fa-external-link-alt"></i> 표준국어대사전 바로가기</a>
+            </section>
+
+            <section id="original-language-search">
+                <h2><i class="fas fa-language"></i> 원어 성경 (외부 링크)</h2>
+                <p>원어(히브리어, 헬라어) 성경 검색을 위해 신뢰도 높은 외부 사이트로 이동합니다. 새 탭에서 열립니다.</p>
+                <a href="https://biblehub.com/" target="_blank" class="cta-button"><i class="fas fa-external-link-alt"></i> Bible Hub 사이트 바로가기</a>
+            </section>
+
+        </div>
+    </main>
+
+    <script src="bible-data.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

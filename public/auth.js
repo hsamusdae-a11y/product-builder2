@@ -85,11 +85,15 @@ document.getElementById('signup-form')?.addEventListener('submit', (e) => {
 });
 
 function showLoginForm() {
+    const authPage = document.getElementById('auth-page');
+    if (authPage) authPage.style.display = 'flex';
     document.getElementById('login-form-container').style.display = 'block';
     document.getElementById('signup-form-container').style.display = 'none';
 }
 
 function showRegisterForm() {
+    const authPage = document.getElementById('auth-page');
+    if (authPage) authPage.style.display = 'flex';
     document.getElementById('login-form-container').style.display = 'none';
     document.getElementById('signup-form-container').style.display = 'block';
 }
@@ -102,9 +106,36 @@ function showMainApp() {
     if (appContainer) appContainer.style.display = 'block';
     document.body.classList.remove('login-page');
     
+    updateUserUI();
+}
+
+function updateUserUI() {
     const userGreeting = document.getElementById('user-greeting');
-    if (userGreeting && currentUser) {
-        userGreeting.textContent = `${currentUser.name} ${currentUser.position}님 환영합니다!`;
+    const logoutBtn = document.getElementById('logout-btn');
+    
+    if (currentUser) {
+        if (userGreeting) userGreeting.textContent = `${currentUser.name} ${currentUser.position}님 환영합니다!`;
+        if (logoutBtn) {
+            logoutBtn.textContent = '로그아웃';
+            logoutBtn.onclick = logout;
+        }
+    } else {
+        if (userGreeting) userGreeting.textContent = '로그인이 필요합니다 (구경 모드)';
+        if (logoutBtn) {
+            logoutBtn.textContent = '로그인';
+            logoutBtn.onclick = () => {
+                const authPage = document.getElementById('auth-page');
+                if (authPage) authPage.style.display = 'flex';
+            };
+        }
+    }
+}
+
+function hideAuthModal() {
+    const authPage = document.getElementById('auth-page');
+    if (authPage) {
+        authPage.style.display = 'none';
+        updateUserUI();
     }
 }
 
@@ -123,4 +154,5 @@ function getCurrentUser() {
 // app.js에서 호출하는 함수명 호환성 유지
 function checkAuthStatus() {
     checkSession();
+    updateUserUI(); // 로그인 여부와 관계없이 UI 업데이트
 }
