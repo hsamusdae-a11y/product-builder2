@@ -219,6 +219,9 @@ header .container {
     background: var(--card-bg);
     box-shadow: var(--shadow-sm);
     flex-wrap: wrap;
+    max-width: 1200px; /* 컨테이너와 동일한 너비 설정 */
+    margin: 0 auto; /* 네비게이션 바 자체를 화면 중앙으로 */
+    border-radius: 0 0 20px 20px; /* 하단 모서리 둥글게 처리 (선택 사항) */
 }
 
 .nav-btn {
