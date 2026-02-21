@@ -1,5 +1,6 @@
 // 인증 관리
-let currentUser = null;
+// 전역 변수로 선언하여 app.js와 공유
+window.currentUser = null;
 
 // 페이지 로드 시 세션 확인
 document.addEventListener('DOMContentLoaded', () => {
@@ -22,10 +23,20 @@ function checkSession() {
     const userSession = localStorage.getItem('currentUser');
     if (userSession) {
         try {
-            currentUser = JSON.parse(userSession);
+            // JSON 파싱 시도
+            if (userSession.startsWith('{')) {
+                window.currentUser = JSON.parse(userSession);
+            } else {
+                // 단순 이메일 문자열인 경우 객체로 변환 (하위 호환성)
+                window.currentUser = { email: userSession, name: '사용자', position: '성도' };
+                localStorage.setItem('currentUser', JSON.stringify(window.currentUser));
+            }
             showMainApp();
         } catch (e) {
+            console.error("Session load error:", e);
+            // 에러 발생 시 세션 초기화
             localStorage.removeItem('currentUser');
+            window.currentUser = null;
         }
     }
 }
@@ -41,7 +52,7 @@ document.getElementById('login-form')?.addEventListener('submit', (e) => {
     const user = users.find(u => u.email === email && u.password === password);
     
     if (user) {
-        currentUser = user;
+        window.currentUser = user;
         localStorage.setItem('currentUser', JSON.stringify(user));
         showMainApp();
     } else {
@@ -112,9 +123,10 @@ function showMainApp() {
 function updateUserUI() {
     const userGreeting = document.getElementById('user-greeting');
     const logoutBtn = document.getElementById('logout-btn');
+    const user = window.currentUser;
     
-    if (currentUser) {
-        if (userGreeting) userGreeting.textContent = `${currentUser.name} ${currentUser.position}님 환영합니다!`;
+    if (user) {
+        if (userGreeting) userGreeting.textContent = `${user.name} ${user.position || '성도'}님 환영합니다!`;
         if (logoutBtn) {
             logoutBtn.textContent = '로그아웃';
             logoutBtn.onclick = logout;
@@ -143,16 +155,22 @@ function logout() {
     if (!confirm('로그아웃 하시겠습니까?')) return;
     
     localStorage.removeItem('currentUser');
-    currentUser = null;
+    window.currentUser = null;
     location.reload();
 }
 
 function getCurrentUser() {
-    return currentUser;
+    return window.currentUser;
+}
+
+function canPostToBoard(user) {
+    const targetUser = user || window.currentUser;
+    if (!targetUser) return false;
+    return targetUser.level >= 2 || targetUser.recommendCount >= 5;
 }
 
 // app.js에서 호출하는 함수명 호환성 유지
 function checkAuthStatus() {
     checkSession();
-    updateUserUI(); // 로그인 여부와 관계없이 UI 업데이트
+    updateUserUI();
 }
