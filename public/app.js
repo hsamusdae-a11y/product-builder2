@@ -808,6 +808,9 @@ function loadMySermons() {
         }
         return;
     }
+
+    const allSermons = JSON.parse(localStorage.getItem('sermons') || '[]');
+    const mySermons = allSermons.filter(s => s.userId === currentUser.email);
     
     if (mySermons.length === 0) {
         container.innerHTML = '<p class="loading-text">저장된 설교가 없습니다.</p>';
@@ -1105,16 +1108,22 @@ function processVoiceCommand(command) {
 }
 
 // ===== 유틸리티 함수 =====
-// auth.js의 getCurrentUser를 사용하므로 여기서는 중복 정의를 제거하거나 auth.js와 호환되도록 수정합니다.
 function getAppCurrentUser() {
-    if (typeof getCurrentUser === 'function') {
-        return getCurrentUser();
-    }
+    // 1. localStorage 직접 확인 (가장 확실함)
     const userSession = localStorage.getItem('currentUser');
-    if (!userSession) return null;
-    try {
-        return JSON.parse(userSession);
-    } catch (e) {
-        return null;
+    if (userSession) {
+        try {
+            return JSON.parse(userSession);
+        } catch (e) {
+            console.error("Session parse error", e);
+        }
     }
+    
+    // 2. auth.js의 전역 변수 확인
+    if (typeof getCurrentUser === 'function') {
+        const user = getCurrentUser();
+        if (user) return user;
+    }
+    
+    return null;
 }
