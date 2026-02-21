@@ -100,7 +100,10 @@ function loadAdminData() {
                 <div class="board-item-actions" style="margin-top: 0;">
                     <button class="btn btn-sm" onclick="changeUserLevel('${user.email}', ${(user.level || 1) + 1})">레벨UP</button>
                     <button class="btn btn-sm" onclick="changeUserLevel('${user.email}', ${(user.level || 1) - 1})">레벨DOWN</button>
-                    <button class="btn btn-sm" style="background: var(--accent-color);" onclick="deleteUser('${user.email}')">삭제</button>
+                    ${user.isBanned ? 
+                        `<button class="btn btn-sm" style="background: var(--success-color);" onclick="unbanUser('${user.email}')">밴 해제</button>` :
+                        `<button class="btn btn-sm" style="background: var(--accent-color);" onclick="banUser('${user.email}')">🚫 강퇴</button>`
+                    }
                 </div>
             </div>
         `).join('');
@@ -125,17 +128,34 @@ function changeUserLevel(email, newLevel) {
     alert(`${email} 회원의 레벨이 ${newLevel}로 변경되었습니다.`);
 }
 
-function deleteUser(email) {
+function banUser(email) {
     if (email === 'hsamusdae@gmail.com') {
-        alert('최고 관리자 계정은 삭제할 수 없습니다.');
+        alert('최고 관리자 계정은 강퇴할 수 없습니다.');
         return;
     }
-    if (!confirm(`${email} 회원을 정말 삭제하시겠습니까?`)) return;
+    if (!confirm(`${email} 회원을 강제 퇴거(BAN)시키겠습니까? 해당 사용자는 재가입 및 로그인이 차단됩니다.`)) return;
     
     let users = JSON.parse(localStorage.getItem('users') || '[]');
-    users = users.filter(u => u.email !== email);
+    users = users.map(u => {
+        if (u.email === email) u.isBanned = true;
+        return u;
+    });
     localStorage.setItem('users', JSON.stringify(users));
     loadAdminData();
+    alert('정상적으로 차단되었습니다.');
+}
+
+function unbanUser(email) {
+    if (!confirm(`${email} 회원의 차단을 해제하시겠습니까?`)) return;
+    
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+    users = users.map(u => {
+        if (u.email === email) u.isBanned = false;
+        return u;
+    });
+    localStorage.setItem('users', JSON.stringify(users));
+    loadAdminData();
+    alert('차단이 해제되었습니다.');
 }
 
 // ===== DOM 로드 후 초기화 =====
