@@ -110,11 +110,7 @@ body {
     font-size: 0.9rem;
 }
 
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="password"],
-.form-group input[type="number"],
-.form-group input[type="tel"],
+.form-group input,
 .form-group select,
 .form-group textarea {
     width: 100%;
@@ -593,29 +589,6 @@ h3 {
 .hymn-item:hover {
     background: white;
     box-shadow: var(--shadow-sm);
-}
-
-.hymn-item-actions {
-    display: flex;
-    gap: 8px;
-}
-
-.hymn-checkbox {
-    width: 24px !important;
-    height: 24px !important;
-    min-width: 24px !important;
-    min-height: 24px !important;
-    cursor: pointer !important;
-    display: inline-block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    -webkit-appearance: checkbox !important;
-    appearance: checkbox !important;
-    border: 2px solid var(--primary-color) !important;
-    accent-color: var(--primary-color);
-    margin: 0 !important;
-    position: relative;
-    z-index: 5;
 }
 
 .sermon-actions {
