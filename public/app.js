@@ -1058,6 +1058,12 @@ function filterBoardPosts() {
 }
 
 function showBoardPostForm() {
+    // 이미 수정 중인 상태에서 버튼(수정 취소)을 누르면 수정을 취소함
+    if (editingPostId) {
+        cancelBoardPost();
+        return;
+    }
+
     const currentUser = getAppCurrentUser();
     if (!currentUser) {
         alert('로그인이 필요한 기능입니다.');
@@ -1071,7 +1077,13 @@ function showBoardPostForm() {
         return;
     }
     
-    document.getElementById('board-post-form').style.display = 'block';
+    // 폼 토글 (열려있으면 닫고, 닫혀있으면 엶)
+    const form = document.getElementById('board-post-form');
+    if (form.style.display === 'block') {
+        cancelBoardPost();
+    } else {
+        form.style.display = 'block';
+    }
 }
 
 function editBoardPost(id) {
