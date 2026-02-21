@@ -510,6 +510,11 @@ async function searchWordDirect(word) {
                 <p>${v.text.replace(regex, `<span class="highlight" style="background-color: yellow; font-weight: bold;">${word}</span>`)}</p>
             </div>
         `).join('') + (foundVerses.length > 100 ? '<p class="loading-text">결과가 많아 상위 100건만 표시합니다.</p>' : '');
+        
+        // [추가] 외부 사전 링크 버튼 생성
+        if (typeof ExternalBibleTools !== 'undefined') {
+            ExternalBibleTools.appendExternalDictLinks(word);
+        }
     } catch (error) {
         console.error('단어 검색 중 오류:', error);
         results.innerHTML = `<p class="loading-text">오류: ${error.message}</p>`;
