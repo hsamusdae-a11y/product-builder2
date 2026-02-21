@@ -1,173 +1,139 @@
 /**
- * AI 성경 노트 - 외부 리소스 연동 모듈 (원어 성경 및 사전)
- * 이 파일은 기존 로직과 분리되어 독립적으로 작동합니다.
+ * AI 성경 노트 - 외부 리소스 연동 및 고성능 검색 모듈
  */
 
 const ExternalBibleTools = {
-    // 1. Blue Letter Bible 연동 (원어 주석 및 Interlinear)
-    openBLB: function(bookId, chapter, verse) {
-        const encodedBook = bookId.charAt(0).toUpperCase() + bookId.slice(1);
-        const url = `https://www.blueletterbible.org/kjv/${encodedBook}/${chapter}/${verse}/t_conc_1001`;
+    // 1. 외부 리소스 열기
+    openExternal: function(url) {
         window.open(url, '_blank');
     },
 
-    // 2. Step Bible 연동 (원어 문법 및 어휘 분석)
-    openStepBible: function(bookId, chapter, verse) {
-        const url = `https://www.stepbible.org/?q=reference=KJV.${bookId}.${chapter}.${verse}`;
-        window.open(url, '_blank');
-    },
-
-    // 3. 전문 성경 사전 연동 (갓피아, GOODTV)
+    // 2. 전문 사전 연동
     openKoreanDictionary: function(word, type = 'godpia') {
-        let url = '';
         const encoded = encodeURIComponent(word);
-        if (type === 'godpia') {
-            url = `http://bible.godpia.com/search/result.asp?pk_id=8&search_word=${encoded}`;
-        } else if (type === 'goodtv') {
-            url = `https://bible.goodtv.co.kr/bible/dictionary/search.do?search_text=${encoded}`;
-        }
+        const urls = {
+            godpia: `http://bible.godpia.com/search/result.asp?pk_id=8&search_word=${encoded}`,
+            goodtv: `https://bible.goodtv.co.kr/bible/dictionary/search.do?search_text=${encoded}`,
+            jw: `https://www.jw.org/ko/library/%EC%84%B1%EA%B2%BD-%EC%9A%A9%EC%96%B4-%EC%82%AC%EC%A0%84/search/?q=${encoded}`
+        };
+        window.open(urls[type], '_blank');
+    },
+
+    // 3. 원어 및 심화 연구 (BLB, StepBible)
+    openDeepStudy: function(bookId, chapter, verse, type = 'blb') {
+        const bookName = bookId.charAt(0).toUpperCase() + bookId.slice(1);
+        const url = type === 'blb' 
+            ? `https://www.blueletterbible.org/kjv/${bookName}/${chapter}/${verse}/t_conc_1001`
+            : `https://www.stepbible.org/?q=reference=KJV.${bookId}.${chapter}.${verse}`;
         window.open(url, '_blank');
     },
 
-    // 4. StudyLight 원어 사전 검색 (스트롱 코드 또는 단어)
-    searchStudyLight: function(word, isHebrew = true) {
-        const type = isHebrew ? 'hebrew' : 'greek';
-        const url = `https://www.studylight.org/lexicons/eng/${type}/${encodeURIComponent(word)}.html`;
-        window.open(url, '_blank');
-    },
-
-    // 5. 원어 성경 페이지 전용 검색 핸들러
-    handleOriginalSearch: function() {
-        const wordInput = document.getElementById('original-word-search');
-        const word = wordInput ? wordInput.value.trim() : '';
-        const results = document.getElementById('original-results');
-        
-        if (!word) return alert('검색할 원어나 단어를 입력하세요.');
-
-        results.innerHTML = `
-            <div class="result-item" style="border-top: 3px solid var(--primary-color); padding-top: 20px; background: #f9f9ff; padding: 20px; border-radius: 10px;">
-                <h4 style="margin-bottom: 10px;">🔍 '${word}'에 대한 전문 원어 연구 자료</h4>
-                <p style="margin-bottom: 20px; font-size: 0.9rem; color: #666;">가장 권위 있는 글로벌 원어 연구 사이트로 연결하여 상세 정보를 확인합니다.</p>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                    <button class="btn btn-sm" onclick="ExternalBibleTools.searchStudyLight('${word}', true)">히브리어 사전 (StudyLight)</button>
-                    <button class="btn btn-sm" onclick="ExternalBibleTools.searchStudyLight('${word}', false)">헬라어 사전 (StudyLight)</button>
-                    <button class="btn btn-sm" style="background: #2d3748" onclick="window.open('https://www.blueletterbible.org/search/preSearch.cfm?Criteria=${encodeURIComponent(word)}', '_blank')">원어 콘코던스 (BLB)</button>
-                    <button class="btn btn-sm" style="background: #4a5568" onclick="window.open('https://www.stepbible.org/?q=version=KJV|version=OHB|version=LXX|search=${encodeURIComponent(word)}', '_blank')">어휘 및 문법 분석 (StepBible)</button>
-                </div>
-            </div>
-        `;
-    },
-
-    // 6. 단어 사전 검색 결과 하단에 외부 링크 추가하는 유틸리티
-    appendExternalDictLinks: function(word) {
-        const results = document.getElementById('word-results');
-        if (!results) return;
-
-        const linkBox = document.createElement('div');
-        linkBox.className = 'result-item';
-        linkBox.style.marginTop = '30px';
-        linkBox.style.borderTop = '2px dashed var(--primary-color)';
-        linkBox.style.paddingTop = '20px';
-        linkBox.style.textAlign = 'center';
-        
-        linkBox.innerHTML = `
-            <h4 style="margin-bottom: 15px;">📚 '${word}'에 대한 전문 사전 더보기</h4>
-            <div style="display: flex; gap: 10px; justify-content: center;">
-                <button class="btn btn-sm" style="background: #3182ce" onclick="ExternalBibleTools.openKoreanDictionary('${word}', 'godpia')">갓피아(GODpia) 사전</button>
-                <button class="btn btn-sm" style="background: #2b6cb0" onclick="ExternalBibleTools.openKoreanDictionary('${word}', 'goodtv')">GOODTV 성경사전</button>
-            </div>
-        `;
-        results.appendChild(linkBox);
-    },
-
-    // 7. 성구 사전(Concordance) 검색 엔진
+    // 4. 성구 사전(Concordance) 핵심 엔진
     concordanceSearch: async function() {
-        const keywordInput = document.getElementById('keyword-input');
-        const keyword = keywordInput ? keywordInput.value.trim() : '';
+        const input = document.getElementById('keyword-input');
+        const keyword = input ? input.value.trim() : '';
         const results = document.getElementById('search-results');
         
-        if (!keyword) {
-            return alert('검색어를 입력하세요.');
-        }
+        if (!keyword) return alert('검색어를 입력해 주세요.');
         
-        results.innerHTML = `<div class="loading-text" style="text-align:center; padding: 40px;">
-            <p style="font-size: 1.2rem; margin-bottom: 10px;">📖 성경 전체에서 '${keyword}'(을)를 찾는 중...</p>
-            <progress value="0" max="100" id="search-progress" style="width:100%; height: 20px;"></progress>
-            <p id="search-status" style="margin-top: 10px; font-size: 0.9rem; color: #666;">데이터 로딩 중...</p>
-        </div>`;
+        results.innerHTML = `
+            <div style="text-align:center; padding:50px; background:white; border-radius:15px; box-shadow:0 4px 15px rgba(0,0,0,0.05);">
+                <h3 style="color:var(--primary-color); margin-bottom:15px;">📖 성경 전체에서 '${keyword}' 검색 중...</h3>
+                <div style="width:100%; background:#eee; border-radius:10px; height:10px; overflow:hidden; margin-bottom:10px;">
+                    <div id="search-bar" style="width:0%; height:100%; background:var(--primary-color); transition:0.3s;"></div>
+                </div>
+                <p id="search-info" style="font-size:0.9rem; color:#888;">데이터를 불러오는 중입니다...</p>
+            </div>`;
 
         let foundVerses = [];
         const bookKeys = Object.keys(window.BIBLE_BOOKS);
-        const progress = document.getElementById('search-progress');
-        const status = document.getElementById('search-status');
+        const bar = document.getElementById('search-bar');
+        const info = document.getElementById('search-info');
         
         try {
             for (let i = 0; i < bookKeys.length; i++) {
                 const key = bookKeys[i];
-                const bookName = window.BIBLE_BOOKS[key];
+                if (bar) bar.style.width = `${Math.floor((i / bookKeys.length) * 100)}%`;
+                if (info) info.innerText = `${window.BIBLE_BOOKS[key]} 분석 중...`;
                 
-                if (status) status.innerText = `${bookName} 분석 중...`;
-                if (progress) progress.value = Math.floor((i / bookKeys.length) * 100);
-                
-                // 데이터 로드 (캐시 확인 및 비동기 대기)
+                // 데이터 로드 대기
                 const bookData = await window.loadBibleBook(key);
                 
                 if (bookData) {
-                    for (const chapterNum in bookData) {
-                        for (const verseNum in bookData[chapterNum]) {
-                            const verseText = bookData[chapterNum][verseNum];
-                            if (verseText && verseText.includes(keyword)) {
-                                foundVerses.push({
-                                    bookId: key,
-                                    book: bookName,
-                                    chapter: chapterNum,
-                                    verse: verseNum,
-                                    text: verseText
-                                });
+                    for (const ch in bookData) {
+                        for (const vs in bookData[ch]) {
+                            const text = bookData[ch][vs];
+                            if (text && text.includes(keyword)) {
+                                foundVerses.push({ id: key, name: window.BIBLE_BOOKS[key], ch, vs, text });
                             }
                         }
                     }
                 }
             }
             
-            if (foundVerses.length === 0) {
-                results.innerHTML = `
-                    <div class="card" style="text-align:center; padding: 50px;">
-                        <p style="font-size: 1.2rem; color: #666;">'${keyword}'에 대한 검색 결과가 없습니다.</p>
-                        <p style="margin-top: 15px; font-size: 0.9rem; color: #999;">데이터 로딩 오류일 수 있습니다. 잠시 후 다시 시도해 주세요.</p>
-                        <div style="margin-top: 25px;">
-                            <button class="btn" onclick="ExternalBibleTools.openKoreanDictionary('${keyword}', 'godpia')">외부 사전에서 '${keyword}' 검색</button>
-                        </div>
-                    </div>`;
-                return;
-            }
-
-            const regex = new RegExp(keyword, 'g');
-            results.innerHTML = `
-                <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-                    <h3 style="margin:0;">'${keyword}' 검색 결과 (${foundVerses.length}건)</h3>
-                    <div style="display:flex; gap:8px;">
-                        <button class="btn btn-sm" style="background:#3182ce" onclick="ExternalBibleTools.openKoreanDictionary('${keyword}', 'godpia')">갓피아</button>
-                        <button class="btn btn-sm" style="background:#2b6cb0" onclick="ExternalBibleTools.openKoreanDictionary('${keyword}', 'goodtv')">GOODTV</button>
-                    </div>
-                </div>
-                ${foundVerses.slice(0, 300).map(v => `
-                    <div class="result-item" style="border-left: 5px solid var(--primary-color); margin-bottom: 15px; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 3px 6px rgba(0,0,0,0.08);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px;">
-                            <strong style="color: var(--primary-color); font-size: 1.15rem;">${v.book} ${v.chapter}:${v.verse}</strong>
-                            <div style="display: flex; gap: 8px;">
-                                <button class="btn btn-sm" style="font-size: 0.75rem; background: #4a5568;" onclick="ExternalBibleTools.openBLB('${v.bookId}', ${v.chapter}, ${v.verse})">원어</button>
-                                <button class="btn btn-sm" style="font-size: 0.75rem; background: #718096;" onclick="ExternalBibleTools.openStepBible('${v.bookId}', ${v.chapter}, ${v.verse})">분석</button>
-                            </div>
-                        </div>
-                        <p style="line-height: 1.7; color: #2d3748;">${v.text.replace(regex, `<span style="background-color: #fff3cd; color: #856404; font-weight: bold; padding: 0 3px;">${keyword}</span>`)}</p>
-                    </div>
-                `).join('')}
-            `;
-        } catch (error) {
-            console.error('검색 오류:', error);
-            results.innerHTML = `<div class="card" style="color:red; text-align:center; padding: 30px;"><p>오류 발생: ${error.message}</p></div>`;
+            this.renderResults(keyword, foundVerses);
+        } catch (e) {
+            console.error(e);
+            results.innerHTML = `<div class="card">검색 중 오류가 발생했습니다. (${e.message})</div>`;
         }
+    },
+
+    // 5. 검색 결과 렌더링
+    renderResults: function(keyword, verses) {
+        const results = document.getElementById('search-results');
+        if (verses.length === 0) {
+            results.innerHTML = `
+                <div class="card" style="text-align:center; padding:40px;">
+                    <h3 style="margin-bottom:20px;">'${keyword}'에 대한 내부 검색 결과가 없습니다.</h3>
+                    <p style="color:#666; margin-bottom:30px;">더 자세한 정보나 고고학적 자료는 아래 전문 사전을 이용해 보세요.</p>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                        <button class="btn btn-outline" onclick="ExternalBibleTools.openKoreanDictionary('${keyword}', 'godpia')">갓피아(GODpia) 사전</button>
+                        <button class="btn btn-outline" onclick="ExternalBibleTools.openKoreanDictionary('${keyword}', 'goodtv')">GOODTV 성경사전</button>
+                    </div>
+                </div>`;
+            return;
+        }
+
+        const regex = new RegExp(keyword, 'g');
+        results.innerHTML = `
+            <div style="margin-bottom:20px; display:flex; justify-content:space-between; align-items:center;">
+                <h3>'${keyword}' 검색 결과 (${verses.length}건)</h3>
+                <div style="display:flex; gap:8px;">
+                    <button class="btn btn-sm" onclick="ExternalBibleTools.openKoreanDictionary('${keyword}', 'godpia')">갓피아</button>
+                    <button class="btn btn-sm" onclick="ExternalBibleTools.openKoreanDictionary('${keyword}', 'goodtv')">GOODTV</button>
+                </div>
+            </div>
+            ${verses.slice(0, 300).map(v => `
+                <div class="result-item" style="border-left:5px solid var(--primary-color); padding:20px; background:white; border-radius:10px; margin-bottom:15px; box-shadow:0 3px 6px rgba(0,0,0,0.05);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom:1px solid #eee; padding-bottom:10px;">
+                        <strong style="font-size:1.1rem; color:var(--primary-color);">${v.name} ${v.ch}:${v.vs}</strong>
+                        <div style="display:flex; gap:5px;">
+                            <button class="btn btn-sm" style="background:#4a5568;" onclick="ExternalBibleTools.openDeepStudy('${v.id}', ${v.ch}, ${v.vs}, 'blb')">원어</button>
+                            <button class="btn btn-sm" style="background:#718096;" onclick="ExternalBibleTools.openDeepStudy('${v.id}', ${v.ch}, ${v.vs}, 'step')">분석</button>
+                        </div>
+                    </div>
+                    <p style="line-height:1.7; color:#333;">${v.text.replace(regex, `<mark style="background:#fff3cd; color:#856404; font-weight:bold; padding:2px 4px; border-radius:3px;">${keyword}</mark>`)}</p>
+                </div>
+            `).join('')}
+        `;
+    },
+
+    // 6. 원어 성경 페이지 검색용 핸들러
+    handleOriginalSearch: function() {
+        const word = document.getElementById('original-word-search').value.trim();
+        const results = document.getElementById('original-results');
+        if (!word) return alert('검색할 단어를 입력하세요.');
+
+        results.innerHTML = `
+            <div class="card" style="background:#f9f9ff; border-top:4px solid var(--primary-color);">
+                <h4 style="margin-bottom:15px;">🔍 '${word}' 심화 연구 링크</h4>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <button class="btn" onclick="ExternalBibleTools.openExternal('https://www.blueletterbible.org/search/preSearch.cfm?Criteria=${encodeURIComponent(word)}')">BLB 원어 검색</button>
+                    <button class="btn" onclick="ExternalBibleTools.openExternal('https://www.stepbible.org/?q=search=${encodeURIComponent(word)}')">StepBible 어휘분석</button>
+                    <button class="btn" style="background:#2d3748;" onclick="ExternalBibleTools.openKoreanDictionary('${word}', 'godpia')">갓피아 성경사전</button>
+                    <button class="btn" style="background:#2d3748;" onclick="ExternalBibleTools.openKoreanDictionary('${word}', 'goodtv')">GOODTV 사전</button>
+                </div>
+            </div>`;
     }
 };
 
