@@ -6,7 +6,6 @@
 const ExternalBibleTools = {
     // 1. Blue Letter Bible 연동 (원어 주석 및 Interlinear)
     openBLB: function(bookId, chapter, verse) {
-        // BLB는 첫 글자 대문자를 사용합니다.
         const encodedBook = bookId.charAt(0).toUpperCase() + bookId.slice(1);
         const url = `https://www.blueletterbible.org/kjv/${encodedBook}/${chapter}/${verse}/t_conc_1001`;
         window.open(url, '_blank');
@@ -14,7 +13,6 @@ const ExternalBibleTools = {
 
     // 2. Step Bible 연동 (원어 문법 및 어휘 분석)
     openStepBible: function(bookId, chapter, verse) {
-        // Step Bible 형식 예시: reference=KJV.Gen.1.1
         const url = `https://www.stepbible.org/?q=reference=KJV.${bookId}.${chapter}.${verse}`;
         window.open(url, '_blank');
     },
@@ -84,84 +82,93 @@ const ExternalBibleTools = {
 
     // 7. 성구 사전(Concordance) 검색 엔진
     concordanceSearch: async function() {
-        const keyword = document.getElementById('keyword-input').value.trim();
+        const keywordInput = document.getElementById('keyword-input');
+        const keyword = keywordInput ? keywordInput.value.trim() : '';
         const results = document.getElementById('search-results');
         
-        if (!keyword || keyword.length < 2) {
-            return alert('두 글자 이상의 검색어를 입력하세요.');
+        if (!keyword) {
+            return alert('검색어를 입력하세요.');
         }
         
-        results.innerHTML = `<div class="loading-text" style="text-align:center;">
-            <p>📖 성경 전체에서 '${keyword}'(을)를 검색하여 불러오는 중...</p>
-            <progress value="0" max="100" id="search-progress" style="width:100%;"></progress>
+        results.innerHTML = `<div class="loading-text" style="text-align:center; padding: 40px;">
+            <p style="font-size: 1.2rem; margin-bottom: 10px;">📖 성경 전체에서 '${keyword}'(을)를 찾는 중...</p>
+            <progress value="0" max="100" id="search-progress" style="width:100%; height: 20px;"></progress>
+            <p id="search-status" style="margin-top: 10px; font-size: 0.9rem; color: #666;">데이터 로딩 중...</p>
         </div>`;
 
         let foundVerses = [];
         const bookKeys = Object.keys(window.BIBLE_BOOKS);
         const progress = document.getElementById('search-progress');
+        const status = document.getElementById('search-status');
         
         try {
             for (let i = 0; i < bookKeys.length; i++) {
                 const key = bookKeys[i];
                 const bookName = window.BIBLE_BOOKS[key];
                 
-                // 진행률 표시
+                if (status) status.innerText = `${bookName} 분석 중...`;
                 if (progress) progress.value = Math.floor((i / bookKeys.length) * 100);
                 
-                // 데이터 로드 및 검색
+                // 데이터 로드 (캐시 확인 및 비동기 대기)
                 const bookData = await window.loadBibleBook(key);
-                if (!bookData) continue;
-
-                for (const chapterNum in bookData) {
-                    for (const verseNum in bookData[chapterNum]) {
-                        const verseText = bookData[chapterNum][verseNum];
-                        if (verseText.includes(keyword)) {
-                            foundVerses.push({
-                                bookId: key,
-                                book: bookName,
-                                chapter: chapterNum,
-                                verse: verseNum,
-                                text: verseText
-                            });
+                
+                if (bookData) {
+                    for (const chapterNum in bookData) {
+                        for (const verseNum in bookData[chapterNum]) {
+                            const verseText = bookData[chapterNum][verseNum];
+                            if (verseText && verseText.includes(keyword)) {
+                                foundVerses.push({
+                                    bookId: key,
+                                    book: bookName,
+                                    chapter: chapterNum,
+                                    verse: verseNum,
+                                    text: verseText
+                                });
+                            }
                         }
                     }
                 }
             }
             
             if (foundVerses.length === 0) {
-                results.innerHTML = `<div class="card" style="text-align:center;"><p>'${keyword}'에 대한 검색 결과가 없습니다.</p></div>`;
+                results.innerHTML = `
+                    <div class="card" style="text-align:center; padding: 50px;">
+                        <p style="font-size: 1.2rem; color: #666;">'${keyword}'에 대한 검색 결과가 없습니다.</p>
+                        <p style="margin-top: 15px; font-size: 0.9rem; color: #999;">데이터 로딩 오류일 수 있습니다. 잠시 후 다시 시도해 주세요.</p>
+                        <div style="margin-top: 25px;">
+                            <button class="btn" onclick="ExternalBibleTools.openKoreanDictionary('${keyword}', 'godpia')">외부 사전에서 '${keyword}' 검색</button>
+                        </div>
+                    </div>`;
                 return;
             }
 
             const regex = new RegExp(keyword, 'g');
             results.innerHTML = `
-                <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-                    <h3>'${keyword}' 검색 결과 (${foundVerses.length}건)</h3>
-                    <div style="display:flex; gap:5px;">
-                        <button class="btn btn-sm" style="background:#3182ce" onclick="ExternalBibleTools.openKoreanDictionary('${keyword}', 'godpia')">갓피아 사전</button>
-                        <button class="btn btn-sm" style="background:#2b6cb0" onclick="ExternalBibleTools.openKoreanDictionary('${keyword}', 'goodtv')">GOODTV 사전</button>
+                <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <h3 style="margin:0;">'${keyword}' 검색 결과 (${foundVerses.length}건)</h3>
+                    <div style="display:flex; gap:8px;">
+                        <button class="btn btn-sm" style="background:#3182ce" onclick="ExternalBibleTools.openKoreanDictionary('${keyword}', 'godpia')">갓피아</button>
+                        <button class="btn btn-sm" style="background:#2b6cb0" onclick="ExternalBibleTools.openKoreanDictionary('${keyword}', 'goodtv')">GOODTV</button>
                     </div>
                 </div>
-                ${foundVerses.slice(0, 200).map(v => `
-                    <div class="result-item" style="border-left: 4px solid var(--primary-color); margin-bottom: 15px; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
-                            <strong style="color: var(--primary-color); font-size: 1.1rem;">${v.book} ${v.chapter}:${v.verse}</strong>
-                            <div style="display: flex; gap: 5px;">
-                                <button class="btn btn-sm" style="font-size: 0.7rem; padding: 2px 8px; background: #4a5568;" onclick="ExternalBibleTools.openBLB('${v.bookId}', ${v.chapter}, ${v.verse})">원어(BLB)</button>
-                                <button class="btn btn-sm" style="font-size: 0.7rem; padding: 2px 8px; background: #718096;" onclick="ExternalBibleTools.openStepBible('${v.bookId}', ${v.chapter}, ${v.verse})">분석(Step)</button>
+                ${foundVerses.slice(0, 300).map(v => `
+                    <div class="result-item" style="border-left: 5px solid var(--primary-color); margin-bottom: 15px; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 3px 6px rgba(0,0,0,0.08);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                            <strong style="color: var(--primary-color); font-size: 1.15rem;">${v.book} ${v.chapter}:${v.verse}</strong>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn btn-sm" style="font-size: 0.75rem; background: #4a5568;" onclick="ExternalBibleTools.openBLB('${v.bookId}', ${v.chapter}, ${v.verse})">원어</button>
+                                <button class="btn btn-sm" style="font-size: 0.75rem; background: #718096;" onclick="ExternalBibleTools.openStepBible('${v.bookId}', ${v.chapter}, ${v.verse})">분석</button>
                             </div>
                         </div>
-                        <p style="line-height: 1.6; color: #333;">${v.text.replace(regex, `<span style="background-color: yellow; font-weight: bold; padding: 0 2px;">${keyword}</span>`)}</p>
+                        <p style="line-height: 1.7; color: #2d3748;">${v.text.replace(regex, `<span style="background-color: #fff3cd; color: #856404; font-weight: bold; padding: 0 3px;">${keyword}</span>`)}</p>
                     </div>
                 `).join('')}
-                ${foundVerses.length > 200 ? `<p class="loading-text" style="text-align:center;">결과가 너무 많아 상위 200건만 표시합니다.</p>` : ''}
             `;
         } catch (error) {
-            console.error('성구 사전 검색 중 오류:', error);
-            results.innerHTML = `<div class="card" style="color:red;"><p>오류가 발생했습니다: ${error.message}</p></div>`;
+            console.error('검색 오류:', error);
+            results.innerHTML = `<div class="card" style="color:red; text-align:center; padding: 30px;"><p>오류 발생: ${error.message}</p></div>`;
         }
     }
 };
 
-// 전역에서 접근 가능하도록 설정
 window.ExternalBibleTools = ExternalBibleTools;
