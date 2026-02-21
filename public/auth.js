@@ -123,6 +123,7 @@ function showMainApp() {
 function updateUserUI() {
     const userGreeting = document.getElementById('user-greeting');
     const logoutBtn = document.getElementById('logout-btn');
+    const adminBtn = document.querySelector('[data-page="admin"]');
     const user = window.currentUser;
     
     if (user) {
@@ -130,6 +131,10 @@ function updateUserUI() {
         if (logoutBtn) {
             logoutBtn.textContent = '로그아웃';
             logoutBtn.onclick = logout;
+        }
+        // 관리자 메뉴 표시 여부
+        if (adminBtn) {
+            adminBtn.style.display = isAdmin(user) ? 'inline-block' : 'none';
         }
     } else {
         if (userGreeting) userGreeting.textContent = '로그인이 필요합니다 (구경 모드)';
@@ -163,9 +168,18 @@ function getCurrentUser() {
     return window.currentUser;
 }
 
+function isAdmin(user) {
+    const targetUser = user || window.currentUser;
+    if (!targetUser) return false;
+    // 이메일이 hsamusdae@gmail.com 이거나 role이 admin인 경우 관리자로 인정
+    return targetUser.email === 'hsamusdae@gmail.com' || targetUser.role === 'admin' || targetUser.level >= 9;
+}
+
 function canPostToBoard(user) {
     const targetUser = user || window.currentUser;
     if (!targetUser) return false;
+    // 관리자는 무조건 허용, 일반 사용자는 레벨 2 이상 또는 추천 5개 이상
+    if (isAdmin(targetUser)) return true;
     return targetUser.level >= 2 || targetUser.recommendCount >= 5;
 }
 

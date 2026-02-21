@@ -69,8 +69,73 @@ function navigateTo(pageName) {
             loadPopularHymns();
         } else if (pageName === 'guide') {
             loadBibleGuide();
+        } else if (pageName === 'admin') {
+            loadAdminData();
         }
     }
+}
+
+// ===== 관리자 기능 =====
+function loadAdminData() {
+    const currentUser = getAppCurrentUser();
+    if (!currentUser || (typeof isAdmin === 'function' && !isAdmin(currentUser))) {
+        alert('관리자 권한이 없습니다.');
+        navigateTo('home');
+        return;
+    }
+
+    // 회원 목록 로드
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const userListContainer = document.getElementById('admin-user-list');
+    
+    if (users.length === 0) {
+        userListContainer.innerHTML = '<p class="loading-text">등록된 회원이 없습니다.</p>';
+    } else {
+        userListContainer.innerHTML = users.map(user => `
+            <div class="result-item" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>${user.name}</strong> (${user.email})<br>
+                    <small>${user.church || '소속 없음'} | ${user.position || '직분 없음'} | 레벨: ${user.level || 1}</small>
+                </div>
+                <div class="board-item-actions" style="margin-top: 0;">
+                    <button class="btn btn-sm" onclick="changeUserLevel('${user.email}', ${(user.level || 1) + 1})">레벨UP</button>
+                    <button class="btn btn-sm" onclick="changeUserLevel('${user.email}', ${(user.level || 1) - 1})">레벨DOWN</button>
+                    <button class="btn btn-sm" style="background: var(--accent-color);" onclick="deleteUser('${user.email}')">삭제</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // 통계 로드
+    const sermons = JSON.parse(localStorage.getItem('sermons') || '[]');
+    const posts = JSON.parse(localStorage.getItem('boardPosts') || '[]');
+    document.getElementById('stat-sermons').textContent = sermons.length;
+    document.getElementById('stat-posts').textContent = posts.length;
+}
+
+function changeUserLevel(email, newLevel) {
+    if (newLevel < 1) newLevel = 1;
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+    users = users.map(u => {
+        if (u.email === email) u.level = newLevel;
+        return u;
+    });
+    localStorage.setItem('users', JSON.stringify(users));
+    loadAdminData();
+    alert(`${email} 회원의 레벨이 ${newLevel}로 변경되었습니다.`);
+}
+
+function deleteUser(email) {
+    if (email === 'hsamusdae@gmail.com') {
+        alert('최고 관리자 계정은 삭제할 수 없습니다.');
+        return;
+    }
+    if (!confirm(`${email} 회원을 정말 삭제하시겠습니까?`)) return;
+    
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+    users = users.filter(u => u.email !== email);
+    localStorage.setItem('users', JSON.stringify(users));
+    loadAdminData();
 }
 
 // ===== DOM 로드 후 초기화 =====
