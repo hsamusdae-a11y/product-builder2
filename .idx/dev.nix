@@ -2,7 +2,7 @@
 # see: https://developers.google.com/idx/guides/customize-idx-env
 { pkgs, ... }: {
   # Which nixpkgs channel to use.
-  channel = "stable-23.11"; # or "unstable"
+  channel = "stable-23.11";
 
   # Use https://search.nixos.org/packages to find packages
   packages = [
@@ -16,6 +16,7 @@
     # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
     extensions = [
       "google.gemini-cli-vscode-ide-companion"
+      "googlecloudtools.cloudcode"
     ];
 
     # Enable previews and customize configuration
@@ -23,28 +24,11 @@
       enable = true;
       previews = [
         {
-          # Unified server for web app and proxy
+          # For a static web app, just use the 'web' manager without a command
           id = "web";
-          command = ["node", "server.js"];
           manager = "web";
-          env = {
-            # The web server will run on port 3000
-            PORT = "3000"; 
-          };
         }
       ];
-    };
-
-    # Workspace lifecycle hooks
-    workspace = {
-      # Runs when a workspace is first created
-      onCreate = {
-        npm-install = "npm install";
-        default.openFiles = ["public/index.html", "public/main.js", "server.js"];
-      };
-
-      # Runs when the workspace is (re)started
-      onStart = {};
     };
   };
 }
