@@ -7,6 +7,7 @@
   # Use https://search.nixos.org/packages to find packages
   packages = [
     pkgs.nodejs_20
+    pkgs.gh
   ];
 
   # Sets environment variables in the workspace
@@ -20,6 +21,7 @@
     ];
 
     # Enable previews and customize configuration
+    /*
     previews = {
       enable = true;
       previews = [
@@ -30,5 +32,6 @@
         }
       ];
     };
+    */
   };
 }
